@@ -1,4 +1,4 @@
-package yellowc.app.allchart
+package yellowc.app.allrank
 
 import org.junit.Test
 
