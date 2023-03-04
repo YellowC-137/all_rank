@@ -12,9 +12,9 @@
         android:title="@string/movie" />
 
     <item
-        android:id="@+id/navigation_searched"
+        android:id="@+id/navigation_trend"
         android:icon="@drawable/baseline_search_24"
-        android:title="@string/searched" />
+        android:title="@string/trend" />
     <item
         android:id="@+id/navigation_game"
         android:icon="@drawable/baseline_videogame_asset_24"
