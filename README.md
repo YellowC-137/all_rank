@@ -1,4 +1,4 @@
-# all_chart
+# all_rank
 
 - MVVM,AAC
 - Dagger-Hilt
@@ -7,6 +7,3 @@
 - Drawer
 - JUnit
 - Espresso UI
-
-
-음악,영화,도서,실시간 검색어
