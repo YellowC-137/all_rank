@@ -36,10 +36,10 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
             tab,position ->
             when(position){
                 0->{
-                    tab.text = "NEWS"
+                    tab.text = "실시간 검색어"
                 }
                 1->{
-                    tab.text = "SEARCHED"
+                    tab.text = "NEWS"
                 }
             }
         }.attach()

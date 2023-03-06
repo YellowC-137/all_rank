@@ -1,23 +1,21 @@
-package yellowc.app.allrank.ui.book.fiction
+package yellowc.app.allrank.ui.book.book_store
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import yellowc.app.allrank.R
-import yellowc.app.allrank.databinding.FragmentFictionBinding
+import yellowc.app.allrank.databinding.FragmentBookStoreBinding
 import yellowc.app.allrank.ui.base.BaseFragment
 
-class FictionFragment : BaseFragment<FragmentFictionBinding>(R.layout.fragment_fiction) {
+class BookStoreFragment : BaseFragment<FragmentBookStoreBinding>(R.layout.fragment_book_store) {
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_fiction, container, false)
+        return inflater.inflate(R.layout.fragment_book_store, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
