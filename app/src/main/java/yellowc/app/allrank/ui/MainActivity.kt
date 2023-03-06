@@ -5,7 +5,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.ActivityMainBinding
@@ -26,10 +25,9 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_music, R.id.navigation_movie, R.id.navigation_searched,R.id.navigation_game,R.id.navigation_book
+                R.id.navigation_music, R.id.navigation_movie, R.id.navigation_trend,R.id.navigation_game,R.id.navigation_book
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 }

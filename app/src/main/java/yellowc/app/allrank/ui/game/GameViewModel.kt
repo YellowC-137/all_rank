@@ -1,4 +1,6 @@
 package yellowc.app.allrank.ui.game
 
-class GameViewModel {
+import androidx.lifecycle.ViewModel
+
+class GameViewModel : ViewModel() {
 }

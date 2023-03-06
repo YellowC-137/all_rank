@@ -1,32 +1,48 @@
 package yellowc.app.allrank.ui.trend
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import yellowc.app.allrank.R
+import yellowc.app.allrank.databinding.FragmentTrendBinding
+import yellowc.app.allrank.ui.base.BaseFragment
 
-class TrendFragment : Fragment() {
+class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend) {
+    private lateinit var viewpager : ViewPager2
+    private val viewModel : TrendViewModel by viewModels()
+    private lateinit var pagerAdapter: TrendViewPagerAdapter
 
-    companion object {
-        fun newInstance() = TrendFragment()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
-
-    private lateinit var viewModel: TrendViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_trend, container, false)
+    ): View {
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(TrendViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        pagerAdapter = TrendViewPagerAdapter(this)
+        viewpager = binding.trendViewpager2
+        viewpager.adapter = pagerAdapter
+        TabLayoutMediator(binding.trendTab,binding.trendViewpager2){
+            tab,position ->
+            when(position){
+                0->{
+                    tab.text = "NEWS"
+                }
+                1->{
+                    tab.text = "SEARCHED"
+                }
+            }
+        }.attach()
     }
 
 }

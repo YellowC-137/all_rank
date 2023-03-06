@@ -6,27 +6,44 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import yellowc.app.allrank.R
+import yellowc.app.allrank.databinding.FragmentMovieBinding
+import yellowc.app.allrank.ui.base.BaseFragment
+import yellowc.app.allrank.ui.trend.TrendViewModel
+import yellowc.app.allrank.ui.trend.TrendViewPagerAdapter
 
-class MovieFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = MovieFragment()
+class MovieFragment : BaseFragment<FragmentMovieBinding>(R.layout.fragment_movie) {
+    private lateinit var viewpager : ViewPager2
+    private val viewModel : MovieViewModel by viewModels()
+    private lateinit var pagerAdapter: MovieViewPagerAdapter
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
-
-    private lateinit var viewModel: MovieViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_movie, container, false)
+    ): View {
+        return binding.root
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        pagerAdapter = MovieViewPagerAdapter(this)
+        viewpager = binding.movieViewpager2
+        viewpager.adapter = pagerAdapter
+        TabLayoutMediator(binding.movieTab,binding.movieViewpager2){
+                tab,position ->
+            when(position){
+                0->{
+                    tab.text = "THEATER"
+                }
+                1->{
+                    tab.text = "NETFLIX"
+                }
+            }
+        }.attach()
     }
 
 }
