@@ -40,10 +40,10 @@ class GameFragment : BaseFragment<FragmentGameBinding>(R.layout.fragment_game) {
                 tab,position ->
             when(position){
                 0->{
-                    tab.text = "METACRITIC"
+                    tab.text = "최고 인기"
                 }
                 1->{
-                    tab.text = "STEAM"
+                    tab.text = "최다 플레이"
                 }
             }
         }.attach()

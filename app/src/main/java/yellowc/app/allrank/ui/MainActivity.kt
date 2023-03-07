@@ -23,11 +23,6 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_music, R.id.navigation_movie, R.id.navigation_trend,R.id.navigation_game,R.id.navigation_book
-            )
-        )
         navView.setupWithNavController(navController)
     }
 }

@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.game.GameFragment">
 
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/game_tab"
             android:layout_width="match_parent"

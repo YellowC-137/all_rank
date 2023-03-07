@@ -38,10 +38,10 @@ class BookFragment : BaseFragment<FragmentBookBinding>(R.layout.fragment_book) {
                 tab,position ->
             when(position){
                 0->{
-                    tab.text = "FICTION"
+                    tab.text = "서점 판매"
                 }
                 1->{
-                    tab.text = "NON-FICTION"
+                    tab.text = "도서관 대출"
                 }
             }
         }.attach()

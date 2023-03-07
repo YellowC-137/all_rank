@@ -39,10 +39,10 @@ class MusicFragment : BaseFragment<FragmentMusicBinding>(R.layout.fragment_music
                 tab,position ->
             when(position){
                 0->{
-                    tab.text = "BILLBOARD"
+                    tab.text = "국내 차트"
                 }
                 1->{
-                    tab.text = "KOREA"
+                    tab.text = "해외 차트"
                 }
             }
         }.attach()
