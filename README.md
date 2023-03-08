@@ -4,6 +4,5 @@
 - Dagger-Hilt
 - RxJava-LiveData
 - Notification, WorkManager
-- Drawer
 - JUnit
 - Espresso UI
