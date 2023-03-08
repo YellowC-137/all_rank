@@ -1,5 +1,8 @@
 package yellowc.app.allrank.data.remote.response.music_response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class TrackX(
     val album_id: Int,
     val album_name: String,
@@ -17,7 +20,7 @@ data class TrackX(
     val track_edit_url: String,
     val track_id: Int,
     val track_name: String,
-    val track_name_translation_list: List<Any>,
+    val track_name_translation_list: List<String>,
     val track_rating: Int,
     val track_share_url: String,
     val updated_time: String

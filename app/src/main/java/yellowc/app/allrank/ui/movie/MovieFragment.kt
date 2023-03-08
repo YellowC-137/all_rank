@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentMovieBinding
 import yellowc.app.allrank.ui.base.BaseFragment
@@ -22,12 +23,6 @@ class MovieFragment : BaseFragment<FragmentMovieBinding>(R.layout.fragment_movie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return binding.root
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pagerAdapter = MovieViewPagerAdapter(this)
@@ -37,10 +32,10 @@ class MovieFragment : BaseFragment<FragmentMovieBinding>(R.layout.fragment_movie
                 tab,position ->
             when(position){
                 0->{
-                    tab.text = "THEATER"
+                    tab.text = "영화 예매율"
                 }
                 1->{
-                    tab.text = "NETFLIX"
+                    tab.text = "넷플릭스"
                 }
             }
         }.attach()

@@ -1,5 +1,8 @@
 package yellowc.app.allrank.data.remote.response.library_response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class DocX(
     val addition_symbol: String,
     val authors: String,

@@ -10,11 +10,8 @@ import yellowc.app.allrank.BuildConfig.FOREIGN_MUSIC_API_KEY
 interface ForeignService {
     @GET("${FOREIGN_MUSIC_API_URL}chart.tracks.get")
     suspend fun getForeign(
-        @Query("chart_name") chart_name: String = "mxmweekly",
-        @Query("page") page: Int = 1,
-        @Query("page_size") page_size: Int = 100,
-        @Query("country") country: String = "WX",
+        @Query("method") chart_name: String = "chart.gettoptracks",
         @Query("format") format: String = "json",
-        @Query("apikey") apikey: String = FOREIGN_MUSIC_API_KEY
+        @Query("api_key") apikey: String = FOREIGN_MUSIC_API_KEY
     ): Response<ForeignResponse>
 }

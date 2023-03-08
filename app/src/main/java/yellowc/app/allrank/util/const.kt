@@ -8,5 +8,5 @@ const val SEARCHED_TERMS_URL ="https://trends.google.co.kr/trends/trendingsearch
 const val NEWS_API_URL = "https://newsapi.org/v2/"
 const val LIBRARY_API_URL ="http://data4library.kr/api/"
 const val BOOK_STORE_API_URL = "http://book.interpark.com/api/"
-const val FOREIGN_MUSIC_API_URL = "https://api.musixmatch.com/ws/1.1/"
+const val FOREIGN_MUSIC_API_URL = "http://ws.audioscrobbler.com/2.0/"
 const val MOVIE_BOXOFFICE_API_URL = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/"

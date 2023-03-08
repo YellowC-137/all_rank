@@ -1,9 +1,12 @@
 package yellowc.app.allrank.data.remote.response.bookstore_response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Item(
     val additionalLink: String,
     val author: String,
-    val categoryId: String,
+    val categoryId: String?=null,
     val categoryName: String,
     val coverLargeUrl: String,
     val coverSmallUrl: String,

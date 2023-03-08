@@ -1,5 +1,8 @@
 package yellowc.app.allrank.data.remote.response.bookstore_response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class BookStoreResponse(
     val copyright: String,
     val imageUrl: String,
@@ -16,5 +19,5 @@ data class BookStoreResponse(
     val searchCategoryName: String,
     val startIndex: Int,
     val title: String,
-    val totalResults: Int
+    val totalResults: Int // 총 아이템수
 )

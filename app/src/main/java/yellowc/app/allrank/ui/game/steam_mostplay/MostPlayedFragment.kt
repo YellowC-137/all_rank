@@ -6,17 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import dagger.hilt.android.AndroidEntryPoint
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentMostPlayedBinding
 import yellowc.app.allrank.ui.base.BaseFragment
 
 class MostPlayedFragment : BaseFragment<FragmentMostPlayedBinding>(R.layout.fragment_most_played) {
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

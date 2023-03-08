@@ -1,19 +1,19 @@
 package yellowc.app.allrank.ui.book
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentBookBinding
 import yellowc.app.allrank.ui.base.BaseFragment
-import yellowc.app.allrank.ui.trend.TrendViewModel
-import yellowc.app.allrank.ui.trend.TrendViewPagerAdapter
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalAdjusters
 
 class BookFragment : BaseFragment<FragmentBookBinding>(R.layout.fragment_book) {
     private lateinit var viewpager : ViewPager2
@@ -21,12 +21,6 @@ class BookFragment : BaseFragment<FragmentBookBinding>(R.layout.fragment_book) {
     private lateinit var pagerAdapter: BookViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

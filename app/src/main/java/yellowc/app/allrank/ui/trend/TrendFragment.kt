@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentTrendBinding
 import yellowc.app.allrank.ui.base.BaseFragment
@@ -18,13 +19,6 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
