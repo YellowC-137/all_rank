@@ -34,6 +34,7 @@ class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_l
                 viewModel.library.collectLatest {
                     if (it.isNotEmpty()) {
                         adapter.submitList(it)
+                        binding.progressbar.visibility = View.GONE
                     }
                 }
             }
@@ -43,6 +44,7 @@ class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_l
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.progressbar.visibility = View.VISIBLE
         val end = AllRankApplication.getDay().first
         val start = AllRankApplication.getDay().second
         viewModel.getlibrary(start, end)

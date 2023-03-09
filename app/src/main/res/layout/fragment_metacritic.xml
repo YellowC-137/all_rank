@@ -10,17 +10,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.movie.theater.TheaterFragment">
+        tools:context=".ui.game.metacritic.MetarciticFragment">
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/theater_rcv"
+            android:id="@+id/meta_rcv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="?attr/actionBarSize"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_ranking" />
+
 
         <ProgressBar
             android:visibility="gone"

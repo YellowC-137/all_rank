@@ -1,4 +1,4 @@
-package yellowc.app.allrank.ui.music.foreign
+package yellowc.app.allrank.ui.game.metacritic
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,16 +10,16 @@ import yellowc.app.allrank.domain.usecases.GetJsoupUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class ForeignViewModel  @Inject constructor(
+class MetacriticViewModel @Inject constructor(
     private val getJsoupUseCase: GetJsoupUseCase
 ) : ViewModel() {
-    private val _billboard = MutableStateFlow<List<BaseModel>>(emptyList())
-    val billboard = _billboard
+    private val _topsellers = MutableStateFlow<List<BaseModel>>(emptyList())
+    val topsellers = _topsellers
 
 
-    fun getForeign(url: String, type: String) {
+    fun getTopSeller(url: String, type: String) {
         viewModelScope.launch {
-            _billboard.emit(getJsoupUseCase.invoke(url, type))
+            _topsellers.emit(getJsoupUseCase.invoke(url, type))
         }
     }
 

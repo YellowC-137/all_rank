@@ -12,7 +12,6 @@ interface RemoteDataSource {
     suspend fun getTheater(targetDate: String): MyResult<MovieResponse>
     suspend fun getNews(today: String): MyResult<NewsResponse>
     suspend fun getLibrary(start: String, end: String): MyResult<LibraryResponse>
-    suspend fun getForeign(): MyResult<ForeignResponse>
     suspend fun getBookStore(): MyResult<BookStoreResponse>
 
 }

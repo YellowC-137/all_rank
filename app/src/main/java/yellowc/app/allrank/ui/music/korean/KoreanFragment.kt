@@ -29,8 +29,10 @@ class KoreanFragment : BaseFragment<FragmentKoreanBinding>(R.layout.fragment_kor
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.progressbar.visibility = View.VISIBLE
         viewModel.getMelon(MELON_CHART_URL, JSOUP_KOREAN_MUSIC)
         binding.koreanRcv.adapter = adapter
+
         collectFlow()
     }
 
@@ -40,6 +42,7 @@ class KoreanFragment : BaseFragment<FragmentKoreanBinding>(R.layout.fragment_kor
                 viewModel.melon.collectLatest {
                     if (it.isNotEmpty()) {
                         adapter.submitList(it)
+                        binding.progressbar.visibility = View.GONE
                     }
                 }
             }

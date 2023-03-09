@@ -58,32 +58,6 @@ object NetworkModule {
 
     @Qualifier
     @Retention(AnnotationRetention.RUNTIME)
-    annotation class ForeignMusicRetrofit
-
-    @Provides
-    @Singleton
-    @ForeignMusicRetrofit
-    fun provideForeignMusicRetrofit(
-        okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory,
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(FOREIGN_MUSIC_API_URL)
-            .client(okHttpClient)
-            .addConverterFactory(converterFactory)
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideForeignMusicApiService(
-        @BookStoreRetrofit retrofit: Retrofit,
-    ): ForeignService {
-        return retrofit.create(ForeignService::class.java)
-    }
-
-    @Qualifier
-    @Retention(AnnotationRetention.RUNTIME)
     annotation class LibraryRetrofit
 
     @Provides

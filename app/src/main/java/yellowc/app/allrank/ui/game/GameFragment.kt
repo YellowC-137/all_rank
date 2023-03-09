@@ -2,7 +2,6 @@ package yellowc.app.allrank.ui.game
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import yellowc.app.allrank.R
@@ -28,10 +27,10 @@ class GameFragment : BaseFragment<FragmentGameBinding>(R.layout.fragment_game) {
         TabLayoutMediator(binding.gameTab, binding.gameViewpager2) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "최고 인기"
+                    tab.text = "메타 크리틱"
                 }
                 1 -> {
-                    tab.text = "최다 플레이"
+                    tab.text = "실시간 동접자"
                 }
             }
         }.attach()

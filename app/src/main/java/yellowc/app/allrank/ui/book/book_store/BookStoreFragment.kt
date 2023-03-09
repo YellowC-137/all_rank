@@ -32,6 +32,7 @@ class BookStoreFragment : BaseFragment<FragmentBookStoreBinding>(R.layout.fragme
                 viewModel.bestsellers.collectLatest {
                     if (it.isNotEmpty()) {
                         adapter.submitList(it)
+                        binding.progressbar.visibility = View.GONE
                     }
                 }
             }
@@ -40,7 +41,7 @@ class BookStoreFragment : BaseFragment<FragmentBookStoreBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.progressbar.visibility = View.VISIBLE
         viewModel.getBestSellers()
         binding.bookstoreRcv.adapter = adapter
         collectFlow()

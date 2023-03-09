@@ -63,35 +63,6 @@ class RemoteRepositoryImpl @Inject constructor(
         return result
     }
 
-    //TODO FIX 이미지 처리
-    override suspend fun getForeignMusicResult(): List<ForeignMusicModel> {
-        val result = ArrayList<ForeignMusicModel>()
-        withContext(dispatcherIO) {
-            val responseList = async {
-                remoteDataSource.getForeign()
-            }
-            val musics: List<Track>
-
-            when (val response = responseList.await()) {
-                is MyResult.Success -> {
-                    musics = response.data.tracks.track
-                }
-                is MyResult.Error -> {
-                    return@withContext
-                }
-            }
-            for (foreign in musics) {
-                val temp = ForeignMusicModel(
-                    rank = musics.indexOf(foreign),
-                    artist_name = foreign.artist.name,
-                    track_name = foreign.name,
-                    ImgUrl = ""
-                )
-            }
-        }
-        return result
-    }
-
     override suspend fun getLibraryResult(start: String, end: String): List<BaseModel> {
         val result = ArrayList<BaseModel>()
         withContext(dispatcherIO) {

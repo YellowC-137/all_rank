@@ -2,6 +2,7 @@ package yellowc.app.allrank.data.remote.datasourceimpl
 
 import android.os.AsyncTask
 import android.util.Log
+import kotlinx.serialization.json.JsonNull.content
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -21,9 +22,9 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                 Timber.e(type)
                 return getMelons(url)
             }
-            JSOUP_NETFLIX -> {
+            JSOUP_RESERVATION -> {
                 Timber.e(type)
-                return getNetflix(url)
+                return getReservation(url)
             }
             JSOUP_SEARCHED -> {
                 Timber.e(type)
@@ -33,9 +34,13 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                 Timber.e(type)
                 return getMostPlay(url)
             }
-            JSOUP_STEAM_TOP_SELLER -> {
+            JSOUP_METACRITIC -> {
                 Timber.e(type)
-                return getTopSeller(url)
+                return getMeta(url)
+            }
+            JSOUP_FOREIGN->{
+                Timber.e(type)
+                return getBillboard(url)
             }
             else -> {
                 return emptyList()
@@ -44,27 +49,59 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
 
     }
 
+    private fun getBillboard(url: String): List<JsoupResponse> {
 
-    private suspend fun getTopSeller(url: String): List<JsoupResponse> {
+        val result = ArrayList<JsoupResponse>()
+        val doc: Document = Jsoup.connect(url).get()
+        val body = doc.body().getElementsByClass("chart-positions")
+        val trs = body.select("tr:not([class])")
+        for (td in trs){
+            val rank = td.select("span.position").text()
+            val covers = td.select("div.cover").select("img").attr("src")
+            val title = td.select("div.title").select("a").text()
+            val artist = td.select("div.artist").select("a").text()
+            val label = td.select("span.label").text()
+
+            if (!rank.isNullOrBlank()){
+                val temp = JsoupResponse(
+                    rank = rank,
+                    title = title,
+                    ImgUrl = covers,
+                    owner = artist,
+                    description = "$label Records"
+                )
+                result.add(temp)
+            }
+        }
+        return result
+    }
+
+
+    private suspend fun getMeta(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
         val tables = doc.body().select("table.clamp-list tbody")
         var cnt = 0
         for (tbody in tables) {
-            val tr : Elements = tbody.select("tr:not(.spacer)")
+            val tr: Elements = tbody.select("tr:not(.spacer)")
             for (element in tr) {
-                cnt+=1
-                val img = element.select("td.clamp-image-wrap").select("a").select("img").attr("src")
+                cnt += 1
+                val img =
+                    element.select("td.clamp-image-wrap").select("a").select("img").attr("src")
                 val content = element.select("td.clamp-summary-wrap")
                 val title = content.select("a.title").select("h3").text()
-                val rate = content.select("div.clamp-score-wrap").select("a.metascore_anchor").select("div.metascore_w large game positive").text()
+                val rate = content.select("div.clamp-score-wrap")
+                    .select("a.metascore_anchor")
+                    .select("div.metascore_w.large.game.positive")
+                    .text()
+                //content.select("div.clamp-score-wrap").select("a.metascore_anchor").select("div.metascore_w large game positive").text()
                 val platform = content.select("span.data").text()
 
                 val temp = JsoupResponse(
                     title = title,
                     rank = cnt.toString(),
                     owner = platform,
-                    description = rate,
+                    description = "$rate 점",
                     ImgUrl = img
                 )
                 result.add(temp)
@@ -131,8 +168,45 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
         return result
     }
 
-    private suspend fun getNetflix(url: String): List<JsoupResponse> {
-        return emptyList()
+
+    private suspend fun getReservation(url: String): List<JsoupResponse> {
+        val result = ArrayList<JsoupResponse>()
+        val doc: Document = Jsoup.connect(url).get()
+        val body = doc.body().getElementsByClass("sect-movie-chart")
+        val ols = body.select("ol")
+        Timber.e("")
+        for (ol in ols){
+            val li = ol.select("li")
+            for (element in li){
+                val images =element.select("div.box-image")
+                val contents = element.select("div.box-contents")
+                val rank = images.select("strong.rank").text()
+                val img = images.select("a").select("span.thumb-image").select("img").attr("src")
+                val title = contents.select("a").select("strong.title").text()
+                val reservate = contents.select("div.score").select("span").text()
+                val date = contents.select("span.txt-info").select("strong").text()
+
+                val pattern = "(\\d+\\.\\d+%).*".toRegex()
+                val matchResult = pattern.find(reservate)
+                val reservation = matchResult?.groupValues?.get(1)
+
+                Timber.e("$rank, $title, $reservate, $date")
+                if (!reservation.isNullOrBlank()){
+                    val temp = JsoupResponse(
+                        rank = rank,
+                        title = title,
+                        ImgUrl = img,
+                        owner = "예매율: $reservation",
+                        description = date
+                    )
+                    result.add(temp)
+                }
+
+            }
+
+
+        }
+        return result
     }
 
     private suspend fun getMelons(url: String): List<JsoupResponse> {

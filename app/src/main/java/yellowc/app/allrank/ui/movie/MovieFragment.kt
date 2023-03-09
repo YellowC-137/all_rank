@@ -2,7 +2,6 @@ package yellowc.app.allrank.ui.movie
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import yellowc.app.allrank.R
@@ -11,7 +10,6 @@ import yellowc.app.allrank.ui.base.BaseFragment
 
 class MovieFragment : BaseFragment<FragmentMovieBinding>(R.layout.fragment_movie) {
     private lateinit var viewpager: ViewPager2
-    private val viewModel: MovieViewModel by viewModels()
     private lateinit var pagerAdapter: MovieViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +23,10 @@ class MovieFragment : BaseFragment<FragmentMovieBinding>(R.layout.fragment_movie
         TabLayoutMediator(binding.movieTab, binding.movieViewpager2) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "영화 예매율"
+                    tab.text = "박스오피스"
                 }
                 1 -> {
-                    tab.text = "넷플릭스"
+                    tab.text = "예매율"
                 }
             }
         }.attach()

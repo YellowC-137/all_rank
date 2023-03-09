@@ -29,6 +29,7 @@ class MostPlayedFragment : BaseFragment<FragmentMostPlayedBinding>(R.layout.frag
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.progressbar.visibility = View.VISIBLE
         viewModel.getMostPlay(STEAM_MOST_PLAYED_URL, JSOUP_STEAM_MOST_PLAYED)
         binding.mostplayRcv.adapter = adapter
         collectFlow()
@@ -40,6 +41,7 @@ class MostPlayedFragment : BaseFragment<FragmentMostPlayedBinding>(R.layout.frag
                 viewModel.mostplay.collectLatest {
                     if (it.isNotEmpty()) {
                         adapter.submitList(it)
+                        binding.progressbar.visibility = View.GONE
                     }
                 }
             }

@@ -14,7 +14,6 @@ class RemoteDatasourceImpl @Inject constructor(
     private val bookStoreService: BookStoreService,
     private val theaterService: TheaterService,
     private val libraryService: LibraryService,
-    private val foreignService: ForeignService,
     private val newsService: NewsService
 ) : RemoteDataSource {
     override suspend fun getTheater(targetDate: String): MyResult<MovieResponse> {
@@ -45,19 +44,6 @@ class RemoteDatasourceImpl @Inject constructor(
 
     override suspend fun getLibrary(start: String, end: String): MyResult<LibraryResponse> {
         val response = libraryService.getLibrary(startDt = start, endDt = end)
-        return try {
-            if (response.isSuccessful) {
-                MyResult.Success(response.body()!!)
-            } else {
-                MyResult.Error(IllegalArgumentException("ERROR"))
-            }
-        } catch (e: Exception) {
-            MyResult.Error(e)
-        }
-    }
-
-    override suspend fun getForeign(): MyResult<ForeignResponse> {
-        val response = foreignService.getForeign()
         return try {
             if (response.isSuccessful) {
                 MyResult.Success(response.body()!!)
