@@ -13,6 +13,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import yellowc.app.allrank.BuildConfig
 import yellowc.app.allrank.data.remote.api.*
+import yellowc.app.allrank.data.remote.datasourceimpl.JsoupServicesImpl
 import yellowc.app.allrank.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
@@ -158,6 +159,13 @@ object NetworkModule {
         @NewsRetrofit retrofit: Retrofit,
     ): NewsService {
         return retrofit.create(NewsService::class.java)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideJsoupMenuService(): JsoupService {
+        return JsoupServicesImpl()
     }
 
     //HttpClient

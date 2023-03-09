@@ -4,8 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class JsoupResponse(
-    val rank : Int,
+    val rank : String,
     val title : String,
-    val ImgUrl :String,
-    val description: String?
+    val ImgUrl :String?,
+    val description: String?,
+    val owner:String?
 )

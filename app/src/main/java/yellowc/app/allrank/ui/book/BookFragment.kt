@@ -17,7 +17,6 @@ import java.time.temporal.TemporalAdjusters
 
 class BookFragment : BaseFragment<FragmentBookBinding>(R.layout.fragment_book) {
     private lateinit var viewpager : ViewPager2
-    private val viewModel : BookViewModel by viewModels()
     private lateinit var pagerAdapter: BookViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

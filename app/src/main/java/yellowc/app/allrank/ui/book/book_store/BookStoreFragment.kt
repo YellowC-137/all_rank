@@ -40,6 +40,7 @@ class BookStoreFragment : BaseFragment<FragmentBookStoreBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.getBestSellers()
         binding.bookstoreRcv.adapter = adapter
         collectFlow()

@@ -13,6 +13,7 @@
         tools:context=".ui.book.book_store.BookStoreFragment">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginBottom="?attr/actionBarSize"
             android:id="@+id/bookstore_rcv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

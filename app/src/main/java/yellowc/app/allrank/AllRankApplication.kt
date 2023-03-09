@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
-import java.lang.Double
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -31,7 +30,7 @@ class AllRankApplication : Application() {
             val weekAgoRaw = currentDate.minusWeeks(1)
             val weekAgo = weekAgoRaw.format(formatter)
 
-            return Pair(today,weekAgo)
+            return Pair(today, weekAgo)
         }
     }
 }

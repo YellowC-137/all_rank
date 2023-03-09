@@ -2,11 +2,12 @@ package yellowc.app.allrank.ui.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import yellowc.app.allrank.databinding.FragmentForeignBinding
 import yellowc.app.allrank.databinding.ItemRankingBinding
 import yellowc.app.allrank.domain.models.BaseModel
 
@@ -19,7 +20,13 @@ class BaseAdapter(
         fun bind(item: BaseModel, itemClicked: (BaseModel) -> Unit) {
             binding.apply {
                 model = item
-                Glide.with(itemImage.context).load(item.img).into(itemImage)
+                if (item.img.isNullOrBlank()){
+                    itemImage.layoutParams = ConstraintLayout.LayoutParams(0, 0)
+                }
+                else{
+                    Glide.with(itemImage.context).load(item.img).into(itemImage)
+                }
+
             }
         }
 

@@ -7,6 +7,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
+import org.jsoup.Jsoup
+import timber.log.Timber
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.ActivityMainBinding
 @AndroidEntryPoint
