@@ -30,6 +30,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>(R.layout.fragment_news) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.progressbar.visibility = View.VISIBLE
         viewModel.getNews(NEWS_URL, JSOUP_NEWS)
         binding.newsRcv.adapter = adapter
         collectFlow()
@@ -42,6 +43,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>(R.layout.fragment_news) {
                 viewModel.news.collectLatest {
                     if (it.isNotEmpty()) {
                         adapter.submitList(it)
+                        binding.progressbar.visibility = View.GONE
                     }
                 }
             }

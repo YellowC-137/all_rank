@@ -29,6 +29,7 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.progressbar.visibility = View.VISIBLE
         viewModel.getSearched(TREND_URL, JSOUP_TREND)
         binding.trendRcv.adapter = adapter
         collectFlow()
@@ -41,6 +42,7 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
                 viewModel.keyword.collectLatest {
                     if (it.isNotEmpty()) {
                         adapter.submitList(it)
+                        binding.progressbar.visibility = View.GONE
                     }
                 }
             }

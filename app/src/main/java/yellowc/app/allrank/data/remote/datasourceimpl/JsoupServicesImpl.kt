@@ -49,7 +49,7 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
 
     }
 
-    private suspend fun getTrends(url: String): List<JsoupResponse> {
+    private fun getTrends(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
         Timber.e(doc.title())
@@ -79,9 +79,23 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
         Timber.e(doc.title())
-        val body = doc.body().getElementsByClass("div._officeCard _officeCard12")
-        Timber.e("${body.size}")
-        val trs = body.select("tr:not([class])")
+        val items = doc.select("item")
+        var rank = 1
+        for (item in items) {
+            val title = item.select("title").text()
+            val link = item.select("link").text()
+            val description = item.select("description").text()
+            val source = item.select("source").text()
+            val temp = JsoupResponse(
+                rank = "",
+                title = title,
+                owner = source,
+                ImgUrl = "",
+                description = ""
+            )
+            result.add(temp)
+            rank+=1
+        }
 
         return result
     }
@@ -114,7 +128,7 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
     }
 
 
-    private suspend fun getMeta(url: String): List<JsoupResponse> {
+    private fun getMeta(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
         val tables = doc.body().select("table.clamp-list tbody")
@@ -149,7 +163,7 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
         return result
     }
 
-    private suspend fun getMostPlay(url: String): List<JsoupResponse> {
+    private fun getMostPlay(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
         Timber.e(doc.title())
@@ -192,7 +206,7 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
         return result
     }
 
-    private suspend fun getReservation(url: String): List<JsoupResponse> {
+    private fun getReservation(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
         val body = doc.body().getElementsByClass("sect-movie-chart")
@@ -235,7 +249,7 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
         return result
     }
 
-    private suspend fun getMelons(url: String): List<JsoupResponse> {
+    private fun getMelons(url: String): List<JsoupResponse> {
 
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
