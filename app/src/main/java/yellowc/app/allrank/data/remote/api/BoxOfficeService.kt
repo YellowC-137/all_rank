@@ -7,7 +7,7 @@ import yellowc.app.allrank.BuildConfig.MOVIE_API_KEY
 import yellowc.app.allrank.data.remote.response.movie_response.MovieResponse
 import yellowc.app.allrank.util.MOVIE_BOXOFFICE_API_URL
 
-interface TheaterService {
+interface BoxOfficeService {
     @GET("${MOVIE_BOXOFFICE_API_URL}searchWeeklyBoxOfficeList.json")
     suspend fun getTheater(
         @Query("key") key:String = MOVIE_API_KEY,

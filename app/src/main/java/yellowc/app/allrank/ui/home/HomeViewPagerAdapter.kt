@@ -1,16 +1,16 @@
-package yellowc.app.allrank.ui.trend
+package yellowc.app.allrank.ui.home
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import yellowc.app.allrank.ui.trend.news.NewsFragment
-import yellowc.app.allrank.ui.trend.searched.SearchedFragment
+import yellowc.app.allrank.ui.home.news.NewsFragment
+import yellowc.app.allrank.ui.home.trend.TrendFragment
 
-class TrendViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class HomeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount() = 2
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
-            0-> SearchedFragment()
+            0-> TrendFragment()
             else-> NewsFragment()
         }
     }

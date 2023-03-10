@@ -1,8 +1,5 @@
 package yellowc.app.allrank.data.remote.datasourceimpl
 
-import android.os.AsyncTask
-import android.util.Log
-import kotlinx.serialization.json.JsonNull.content
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -11,7 +8,6 @@ import timber.log.Timber
 import yellowc.app.allrank.data.remote.api.JsoupService
 import yellowc.app.allrank.data.remote.response.jsoup_response.JsoupResponse
 import yellowc.app.allrank.util.*
-import java.io.IOException
 import javax.inject.Inject
 
 class JsoupServicesImpl @Inject constructor() : JsoupService {
@@ -26,9 +22,13 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                 Timber.e(type)
                 return getReservation(url)
             }
-            JSOUP_SEARCHED -> {
+            JSOUP_TREND -> {
                 Timber.e(type)
                 return getTrends(url)
+            }
+            JSOUP_NEWS -> {
+                Timber.e(type)
+                return getNews(url)
             }
             JSOUP_STEAM_MOST_PLAYED -> {
                 Timber.e(type)
@@ -38,7 +38,7 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                 Timber.e(type)
                 return getMeta(url)
             }
-            JSOUP_FOREIGN->{
+            JSOUP_FOREIGN -> {
                 Timber.e(type)
                 return getBillboard(url)
             }
@@ -49,20 +49,57 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
 
     }
 
+    private suspend fun getTrends(url: String): List<JsoupResponse> {
+        val result = ArrayList<JsoupResponse>()
+        val doc: Document = Jsoup.connect(url).get()
+        Timber.e(doc.title())
+        val div = doc.body().select("div.col-sm-12")
+        val table = div.select("table.table-hover.table-striped").first()
+        val trs = table!!.select("tr:not([class])")
+        Timber.e("${trs.size}")
+        for (tr in trs) {
+            val rank = tr.select("span.realtimeKeyRank").text()
+            val td = tr.select("td.ellipsis100")
+            val title = td.select("a").attr("title")
+            Timber.e(rank, title)
+            val temp = JsoupResponse(
+                rank = rank,
+                title = title,
+                owner = "",
+                ImgUrl = "",
+                description = ""
+            )
+            result.add(temp)
+        }
+
+        return result
+    }
+
+    private fun getNews(url: String): List<JsoupResponse> {
+        val result = ArrayList<JsoupResponse>()
+        val doc: Document = Jsoup.connect(url).get()
+        Timber.e(doc.title())
+        val body = doc.body().getElementsByClass("div._officeCard _officeCard12")
+        Timber.e("${body.size}")
+        val trs = body.select("tr:not([class])")
+
+        return result
+    }
+
     private fun getBillboard(url: String): List<JsoupResponse> {
 
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
         val body = doc.body().getElementsByClass("chart-positions")
         val trs = body.select("tr:not([class])")
-        for (td in trs){
+        for (td in trs) {
             val rank = td.select("span.position").text()
             val covers = td.select("div.cover").select("img").attr("src")
             val title = td.select("div.title").select("a").text()
             val artist = td.select("div.artist").select("a").text()
             val label = td.select("span.label").text()
 
-            if (!rank.isNullOrBlank()){
+            if (!rank.isNullOrBlank()) {
                 val temp = JsoupResponse(
                     rank = rank,
                     title = title,
@@ -155,45 +192,34 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
         return result
     }
 
-    private suspend fun getTrends(url: String): List<JsoupResponse> {
-
-        val result = ArrayList<JsoupResponse>()
-        val doc: Document = Jsoup.connect(url).get()
-        Timber.e(doc.title())
-
-        val a = doc.body().getElementsByClass("title title-break")
-        Timber.e("${a.size}")
-
-
-        return result
-    }
-
-
     private suspend fun getReservation(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
         val body = doc.body().getElementsByClass("sect-movie-chart")
         val ols = body.select("ol")
         Timber.e("")
-        for (ol in ols){
+        for (ol in ols) {
             val li = ol.select("li")
-            for (element in li){
-                val images =element.select("div.box-image")
+            for (element in li) {
+                val images = element.select("div.box-image")
                 val contents = element.select("div.box-contents")
-                val rank = images.select("strong.rank").text()
+                val _rank = images.select("strong.rank").text()
+                val regex = "No.(\\d+)".toRegex()
+                val matchRank = regex.find(_rank)
+                val rank = matchRank?.groupValues?.get(1)
+
                 val img = images.select("a").select("span.thumb-image").select("img").attr("src")
                 val title = contents.select("a").select("strong.title").text()
                 val reservate = contents.select("div.score").select("span").text()
                 val date = contents.select("span.txt-info").select("strong").text()
 
                 val pattern = "(\\d+\\.\\d+%).*".toRegex()
-                val matchResult = pattern.find(reservate)
-                val reservation = matchResult?.groupValues?.get(1)
+                val matchReserv = pattern.find(reservate)
+                val reservation = matchReserv?.groupValues?.get(1)
 
-                Timber.e("$rank, $title, $reservate, $date")
-                if (!reservation.isNullOrBlank()){
+                if (!reservation.isNullOrBlank()) {
                     val temp = JsoupResponse(
-                        rank = rank,
+                        rank = rank!!,
                         title = title,
                         ImgUrl = img,
                         owner = "예매율: $reservation",

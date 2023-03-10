@@ -7,4 +7,5 @@ interface RetrofitRepositories {
 
     suspend fun getBookStoreResult(): List<BaseModel>
     suspend fun getLibraryResult(start: String, end: String): List<BaseModel>
+    suspend fun getBoxOfficeResult(target:String):List<BaseModel>
 }

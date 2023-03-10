@@ -23,14 +23,16 @@ class AllRankApplication : Application() {
             return instance.applicationContext
         }
 
-        fun getDay(): Pair<String, String> {
+        fun getDay(): Triple<String,String, String> {
             val currentDate = LocalDate.now()
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val target_form = DateTimeFormatter.ofPattern("yyyyMMdd")
             val today = currentDate.format(formatter)
             val weekAgoRaw = currentDate.minusWeeks(1)
             val weekAgo = weekAgoRaw.format(formatter)
+            val target = weekAgoRaw.format(target_form)
 
-            return Pair(today, weekAgo)
+            return Triple(today, weekAgo,target)
         }
     }
 }

@@ -7,6 +7,8 @@ import yellowc.app.allrank.data.remote.datasource.RemoteDataSource
 import yellowc.app.allrank.data.remote.response.bookstore_response.Item
 import yellowc.app.allrank.data.remote.response.foreign_response.Track
 import yellowc.app.allrank.data.remote.response.library_response.Doc
+import yellowc.app.allrank.data.remote.response.movie_response.BoxOfficeResult
+import yellowc.app.allrank.data.remote.response.movie_response.WeeklyBoxOffice
 import yellowc.app.allrank.di.DispatcherModule
 import yellowc.app.allrank.domain.models.BaseModel
 import yellowc.app.allrank.domain.models.ForeignMusicModel
@@ -36,16 +38,6 @@ class RemoteRepositoryImpl @Inject constructor(
                 }
             }
             for (book in bestsellers) {
-
-                //val temp = BookStoreModel(
-                //                    title = book.title,
-                //                    rank = book.rank,
-                //                    description = book.description,
-                //                    pubDate = book.pubDate,
-                //                    publisher = book.publisher,
-                //                    imgUrl = book.coverLargeUrl,
-                //                    author = book.author
-                //                )
 
                 val temp = BaseModel(
                     title = book.title,
@@ -81,22 +73,44 @@ class RemoteRepositoryImpl @Inject constructor(
             }
             for (book in library) {
 
-                //val temp = LibraryModel(
-                //                    rank = book.doc.ranking,
-                //                    publisher = book.doc.publisher,
-                //                    publication_year = book.doc.publication_year,
-                //                    bookname = book.doc.bookname,
-                //                    bookImageURL = book.doc.bookImageURL,
-                //                    authors = book.doc.authors,
-                //                    class_nm = book.doc.class_nm
-                //                )
-
                 val temp = BaseModel(
                     rank = book.doc.ranking,
                     title = book.doc.bookname,
                     img = book.doc.bookImageURL,
                     owner = book.doc.authors,
                     content = book.doc.class_nm
+                )
+
+                result.add(temp)
+            }
+        }
+        return result
+    }
+
+    override suspend fun getBoxOfficeResult(target: String): List<BaseModel> {
+        val result = ArrayList<BaseModel>()
+        withContext(dispatcherIO) {
+            val responseList = async {
+                remoteDataSource.getBoxOffice(target)
+            }
+            val boxOffice: List<WeeklyBoxOffice>
+
+            when (val response = responseList.await()) {
+                is MyResult.Success -> {
+                    boxOffice = response.data.boxOfficeResult.weeklyBoxOfficeList
+                }
+                is MyResult.Error -> {
+                    return@withContext
+                }
+            }
+            for (movie in boxOffice) {
+
+                val temp = BaseModel(
+                    rank = movie.rank,
+                    title = movie.movieNm,
+                    img = "", //TODO 추가 api 연동!
+                    owner = "누적 관객수: ${movie.audiAcc}",
+                    content = "${movie.openDt} 개봉"
                 )
 
                 result.add(temp)

@@ -104,35 +104,8 @@ object NetworkModule {
     @Singleton
     fun provideTheaterApiService(
         @TheaterRetrofit retrofit: Retrofit,
-    ): TheaterService {
-        return retrofit.create(TheaterService::class.java)
-    }
-
-    @Qualifier
-    @Retention(AnnotationRetention.RUNTIME)
-    annotation class NewsRetrofit
-
-
-    @Provides
-    @Singleton
-    @NewsRetrofit
-    fun provideNewsRetrofit(
-        okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory,
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(NEWS_API_URL)
-            .client(okHttpClient)
-            .addConverterFactory(converterFactory)
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideNewsApiService(
-        @NewsRetrofit retrofit: Retrofit,
-    ): NewsService {
-        return retrofit.create(NewsService::class.java)
+    ): BoxOfficeService {
+        return retrofit.create(BoxOfficeService::class.java)
     }
 
 
