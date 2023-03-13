@@ -32,6 +32,12 @@ class TheaterFragment : BaseFragment<FragmentTheaterBinding>(R.layout.fragment_t
         val target = AllRankApplication.getDay().third
         viewModel.getBoxOffice(target)
         binding.theaterRcv.adapter = adapter
+
+        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.getBoxOffice(target)
+            binding.refreshLayout.isRefreshing = false
+        }
         collectFlow()
     }
 

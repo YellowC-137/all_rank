@@ -26,6 +26,23 @@ class BookStoreFragment : BaseFragment<FragmentBookStoreBinding>(R.layout.fragme
         )
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.progressbar.visibility = View.VISIBLE
+        viewModel.getBestSellers()
+        binding.bookstoreRcv.adapter = adapter
+
+        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.getBestSellers()
+            binding.refreshLayout.isRefreshing = false
+        }
+
+        collectFlow()
+    }
+
+
     private fun collectFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -37,14 +54,6 @@ class BookStoreFragment : BaseFragment<FragmentBookStoreBinding>(R.layout.fragme
                 }
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.progressbar.visibility = View.VISIBLE
-        viewModel.getBestSellers()
-        binding.bookstoreRcv.adapter = adapter
-        collectFlow()
     }
 
 }

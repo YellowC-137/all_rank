@@ -13,6 +13,8 @@
         tools:context=".ui.game.GameFragment">
 
         <com.google.android.material.tabs.TabLayout
+            app:tabSelectedTextColor="@color/main"
+            app:tabIndicatorColor="@color/main"
             android:id="@+id/game_tab"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"

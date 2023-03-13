@@ -28,6 +28,25 @@ class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_l
         )
     }
 
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.progressbar.visibility = View.VISIBLE
+        val end = AllRankApplication.getDay().first
+        val start = AllRankApplication.getDay().second
+        viewModel.getlibrary(start, end)
+        binding.libraryRcv.adapter = adapter
+
+        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.getlibrary(start, end)
+            binding.refreshLayout.isRefreshing = false
+        }
+        collectFlow()
+    }
+
     private fun collectFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -40,17 +59,5 @@ class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_l
             }
         }
     }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.progressbar.visibility = View.VISIBLE
-        val end = AllRankApplication.getDay().first
-        val start = AllRankApplication.getDay().second
-        viewModel.getlibrary(start, end)
-        binding.libraryRcv.adapter = adapter
-        collectFlow()
-    }
-
 
 }

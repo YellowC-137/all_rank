@@ -12,14 +12,21 @@
         android:layout_height="match_parent"
         tools:context=".ui.book.book_store.BookStoreFragment">
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginBottom="?attr/actionBarSize"
+            android:layout_marginBottom="75dp"
             android:id="@+id/bookstore_rcv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/item_ranking"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ProgressBar
             android:visibility="gone"

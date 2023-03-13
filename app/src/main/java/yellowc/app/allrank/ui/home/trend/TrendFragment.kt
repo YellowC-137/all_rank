@@ -32,6 +32,12 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
         binding.progressbar.visibility = View.VISIBLE
         viewModel.getSearched(TREND_URL, JSOUP_TREND)
         binding.trendRcv.adapter = adapter
+
+        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.getSearched(TREND_URL, JSOUP_TREND)
+            binding.refreshLayout.isRefreshing = false
+        }
         collectFlow()
     }
 

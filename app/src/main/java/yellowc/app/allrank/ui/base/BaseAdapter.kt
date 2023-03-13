@@ -21,7 +21,7 @@ class BaseAdapter(
             binding.apply {
                 model = item
                 if (item.img.isNullOrBlank()){
-                    itemImage.layoutParams = ConstraintLayout.LayoutParams(0, 0)
+                    itemImage.layoutParams = LinearLayout.LayoutParams(0, 0)
                 }
                 else{
                     Glide.with(itemImage.context).load(item.img).into(itemImage)

@@ -11,17 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.music.korean.KoreanFragment">
-
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/korean_rcv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="?attr/actionBarSize"
+            android:layout_marginBottom="75dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_ranking" />
 
-
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         <ProgressBar
             android:visibility="gone"
             android:indeterminateTint="@color/main"

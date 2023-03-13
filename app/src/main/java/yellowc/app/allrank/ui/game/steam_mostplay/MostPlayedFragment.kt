@@ -32,6 +32,12 @@ class MostPlayedFragment : BaseFragment<FragmentMostPlayedBinding>(R.layout.frag
         binding.progressbar.visibility = View.VISIBLE
         viewModel.getMostPlay(STEAM_MOST_PLAYED_URL, JSOUP_STEAM_MOST_PLAYED)
         binding.mostplayRcv.adapter = adapter
+
+        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.getMostPlay(STEAM_MOST_PLAYED_URL, JSOUP_STEAM_MOST_PLAYED)
+            binding.refreshLayout.isRefreshing = false
+        }
         collectFlow()
     }
 

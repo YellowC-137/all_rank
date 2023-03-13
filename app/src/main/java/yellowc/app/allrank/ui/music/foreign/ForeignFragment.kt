@@ -40,6 +40,12 @@ class ForeignFragment : BaseFragment<FragmentForeignBinding>(R.layout.fragment_f
         binding.progressbar.visibility = View.VISIBLE
         viewModel.getForeign(FOREIGN_MUSIC_URL, JSOUP_FOREIGN)
         binding.foreignRcv.adapter = adapter
+        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.getForeign(FOREIGN_MUSIC_URL, JSOUP_FOREIGN)
+            binding.refreshLayout.isRefreshing = false
+        }
+
         collectFlow()
     }
 

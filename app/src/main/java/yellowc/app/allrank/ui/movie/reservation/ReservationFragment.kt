@@ -34,6 +34,12 @@ class ReservationFragment :
         binding.progressbar.visibility = View.VISIBLE
         viewModel.getReservation(RESERVATION_URL, JSOUP_RESERVATION)
         binding.reservationRcv.adapter = adapter
+
+        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.getReservation(RESERVATION_URL, JSOUP_RESERVATION)
+            binding.refreshLayout.isRefreshing = false
+        }
         collectFlow()
     }
 

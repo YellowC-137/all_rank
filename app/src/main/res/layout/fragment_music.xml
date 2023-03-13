@@ -13,6 +13,8 @@
         tools:context=".ui.music.MusicFragment">
 
         <com.google.android.material.tabs.TabLayout
+            app:tabSelectedTextColor="@color/main"
+            app:tabIndicatorColor="@color/main"
             android:id="@+id/music_tab"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"

@@ -33,6 +33,12 @@ class KoreanFragment : BaseFragment<FragmentKoreanBinding>(R.layout.fragment_kor
         viewModel.getMelon(MELON_CHART_URL, JSOUP_KOREAN_MUSIC)
         binding.koreanRcv.adapter = adapter
 
+        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.getMelon(MELON_CHART_URL, JSOUP_KOREAN_MUSIC)
+            binding.refreshLayout.isRefreshing = false
+        }
+
         collectFlow()
     }
 

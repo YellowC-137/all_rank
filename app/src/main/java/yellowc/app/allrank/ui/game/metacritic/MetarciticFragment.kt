@@ -34,6 +34,12 @@ class MetarciticFragment : BaseFragment<FragmentMetacriticBinding>(R.layout.frag
         binding.progressbar.visibility = View.VISIBLE
         viewModel.getTopSeller(METACRITIC_URL, JSOUP_METACRITIC)
         binding.metaRcv.adapter = adapter
+
+        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.getTopSeller(METACRITIC_URL, JSOUP_METACRITIC)
+            binding.refreshLayout.isRefreshing = false
+        }
         collectFlow()
     }
 
