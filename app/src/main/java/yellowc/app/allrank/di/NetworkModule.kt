@@ -108,6 +108,33 @@ object NetworkModule {
         return retrofit.create(BoxOfficeService::class.java)
     }
 
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class MovieRetrofit
+
+    @Provides
+    @Singleton
+    @MovieRetrofit
+    fun provideMovieRetrofit(
+        okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(MOVIE_SEARCH_NAVER_API_URL)
+            .client(okHttpClient)
+            .addConverterFactory(converterFactory)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMovieApiService(
+        @MovieRetrofit retrofit: Retrofit,
+    ): MovieSearchService {
+        return retrofit.create(MovieSearchService::class.java)
+    }
+
+
 
     @Provides
     @Singleton

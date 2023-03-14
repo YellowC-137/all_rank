@@ -4,5 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovieResponse(
-    val boxOfficeResult: BoxOfficeResult
+    val display: Int,
+    val items: List<Item>,
+    val lastBuildDate: String,
+    val start: Int,
+    val total: Int
 )

@@ -2,7 +2,6 @@ package yellowc.app.allrank.data.remote.datasourceimpl
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import timber.log.Timber
 import yellowc.app.allrank.data.remote.api.JsoupService
@@ -52,16 +51,13 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
     private fun getTrends(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
-        Timber.e(doc.title())
         val div = doc.body().select("div.col-sm-12")
         val table = div.select("table.table-hover.table-striped").first()
         val trs = table!!.select("tr:not([class])")
-        Timber.e("${trs.size}")
         for (tr in trs) {
             val rank = tr.select("span.realtimeKeyRank").text()
             val td = tr.select("td.ellipsis100")
             val title = td.select("a").attr("title")
-            Timber.e(rank, title)
             val temp = JsoupResponse(
                 rank = rank,
                 title = title,
@@ -78,7 +74,6 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
     private fun getNews(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
-        Timber.e(doc.title())
         val items = doc.select("item")
         var rank = 1
         for (item in items) {
@@ -94,7 +89,7 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                 description = ""
             )
             result.add(temp)
-            rank+=1
+            rank += 1
         }
 
         return result
@@ -145,7 +140,6 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                     .select("a.metascore_anchor")
                     .select("div.metascore_w.large.game.positive")
                     .text()
-                //content.select("div.clamp-score-wrap").select("a.metascore_anchor").select("div.metascore_w large game positive").text()
                 val platform = content.select("span.data").text()
 
                 val temp = JsoupResponse(
@@ -156,80 +150,44 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                     ImgUrl = img
                 )
                 result.add(temp)
-                Timber.e("$title,$platform,$rate")
-
             }
         }
         return result
     }
-
 
 
     private fun getMostPlay(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
-        Timber.e(doc.title())
-        val body = doc.body().getElementsByClass("app-table popular-page")
         val tbody = doc.selectFirst("tbody")!!
-        for (i in 1..tbody.children().size)
-        {
-            val tr : Elements =  tbody.children()
+        val trs = tbody.select("tbody tr:nth-child(n+2)")
+        var cnt = 1
 
+        for (tr in trs) {
+            val img = tr.child(0).select("a").select("img").attr("src")
+            val title = tr.child(1).select("a").text()
+            val player = tr.child(2).text()
+            val max = tr.child(3).text()
+            val temp = JsoupResponse(
+                rank = cnt.toString(),
+                title = title,
+                ImgUrl = img,
+                owner = "현재 플레이어 수 :$player 명",
+                description = "이주 최대 플레이어 수: $max 명"
+            )
+            cnt += 1
+            result.add(temp)
         }
-
-
 
         return result
     }
 
-
-    /* val result = ArrayList<JsoupResponse>()
-        val doc: Document = Jsoup.connect(url).get()
-        Timber.e(doc.title())
-        val body = doc.body().getElementsByClass("content")
-        val tbody: Element = doc.selectFirst("tbody")!!
-
-        for ((index, tr) in tbody.children().withIndex()) {
-            // 홀수 번째 tr은 class가 "odd"인 tr
-            if (index % 2 == 0) {
-                val tds: Elements = tr.getElementsByTag("td")
-                val rank: Element = tds[0] // rank
-                val title: Element = tds[1] //title
-                val num: Element = tds[2] // number of people
-                val temp = JsoupResponse(
-                    rank = rank.text(),
-                    title = title.select("a").text(),
-                    ImgUrl = "",
-                    description = "${num.text()} 명",
-                    owner = "현재 플레이 인원"
-                )
-                result.add(temp)
-            } else {
-                // 짝수 번째 tr은 class가 없는 tr
-                val tds: Elements = tr.children()
-                val rank: Element = tds[0] // rank
-                val title: Element = tds[1] //title
-                val num: Element = tds[2] // number of people
-                val temp = JsoupResponse(
-                    rank = rank.text(),
-                    title = title.select("a").text(),
-                    ImgUrl = "",
-                    description = "${num.text()} 명",
-                    owner = "현재 플레이 인원"
-                )
-                result.add(temp)
-            }
-        }
-
-        return result
-    * */
 
     private fun getReservation(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
         val body = doc.body().getElementsByClass("sect-movie-chart")
         val ols = body.select("ol")
-        Timber.e("")
         for (ol in ols) {
             val li = ol.select("li")
             for (element in li) {
@@ -268,10 +226,8 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
     }
 
     private fun getMelons(url: String): List<JsoupResponse> {
-
         val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
-
         val _ranks = doc.body().getElementsByClass("rank") //맨 처음 순위 text도 추가가 된다. 이 크기만 101
         val ranks = _ranks.subList(1, 101)
         val covers = doc.body().getElementsByClass("image_typeAll")
@@ -288,8 +244,6 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
             )
             result.add(temp)
         }
-
-
         return result
     }
 

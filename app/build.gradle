@@ -31,6 +31,8 @@ android {
         buildConfigField("String", "BOOK_STORE_API_KEY", properties.getProperty("BOOK_STORE_API_KEY"))
         buildConfigField("String", "FOREIGN_MUSIC_API_KEY", properties.getProperty("FOREIGN_MUSIC_API_KEY"))
         buildConfigField("String", "MOVIE_API_KEY", properties.getProperty("MOVIE_API_KEY"))
+        buildConfigField("String", "NAVER_API_KEY", properties.getProperty("NAVER_API_KEY"))
+        buildConfigField("String", "NAVER_SECRET", properties.getProperty("NAVER_SECRET"))
     }
 
     buildTypes {

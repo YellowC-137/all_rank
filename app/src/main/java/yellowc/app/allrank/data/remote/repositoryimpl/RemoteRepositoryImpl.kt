@@ -3,16 +3,13 @@ package yellowc.app.allrank.data.remote.repositoryimpl
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import yellowc.app.allrank.data.remote.datasource.RemoteDataSource
 import yellowc.app.allrank.data.remote.response.bookstore_response.Item
-import yellowc.app.allrank.data.remote.response.foreign_response.Track
+import yellowc.app.allrank.data.remote.response.boxoffice_response.WeeklyBoxOffice
 import yellowc.app.allrank.data.remote.response.library_response.Doc
-import yellowc.app.allrank.data.remote.response.movie_response.BoxOfficeResult
-import yellowc.app.allrank.data.remote.response.movie_response.WeeklyBoxOffice
 import yellowc.app.allrank.di.DispatcherModule
 import yellowc.app.allrank.domain.models.BaseModel
-import yellowc.app.allrank.domain.models.ForeignMusicModel
-import yellowc.app.allrank.domain.models.LibraryModel
 import yellowc.app.allrank.domain.models.MyResult
 import yellowc.app.allrank.domain.repositories.RetrofitRepositories
 import javax.inject.Inject
@@ -98,23 +95,36 @@ class RemoteRepositoryImpl @Inject constructor(
             when (val response = responseList.await()) {
                 is MyResult.Success -> {
                     boxOffice = response.data.boxOfficeResult.weeklyBoxOfficeList
+                    for (movie in boxOffice) {
+                        val movieInfo = async {
+                            remoteDataSource.getMovie(movie = movie.movieNm)
+                        }
+                        Timber.e(movie.movieNm)
+                        when (val responseMovieInfo = movieInfo.await()) {
+                            is MyResult.Success -> {
+                                val info = responseMovieInfo.data.items[0]
+                                val temp = BaseModel(
+                                    rank = movie.rank,
+                                    title = movie.movieNm,
+                                    img = info.image,
+                                    owner = "누적 관객수: ${movie.audiAcc}",
+                                    content = "${movie.openDt} 개봉"
+                                )
+
+                                result.add(temp)
+
+                            }
+                            is MyResult.Error -> {
+                                return@withContext
+                            }
+                        }
+                    }
                 }
                 is MyResult.Error -> {
                     return@withContext
                 }
             }
-            for (movie in boxOffice) {
 
-                val temp = BaseModel(
-                    rank = movie.rank,
-                    title = movie.movieNm,
-                    img = "", //TODO 추가 api 연동!
-                    owner = "누적 관객수: ${movie.audiAcc}",
-                    content = "${movie.openDt} 개봉"
-                )
-
-                result.add(temp)
-            }
         }
         return result
     }

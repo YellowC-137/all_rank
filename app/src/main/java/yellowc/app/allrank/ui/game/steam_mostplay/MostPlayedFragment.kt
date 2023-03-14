@@ -13,7 +13,6 @@ import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentMostPlayedBinding
 import yellowc.app.allrank.ui.base.BaseAdapter
 import yellowc.app.allrank.ui.base.BaseFragment
-import yellowc.app.allrank.util.GAME_MOST_PLAYED_TEST
 import yellowc.app.allrank.util.JSOUP_STEAM_MOST_PLAYED
 import yellowc.app.allrank.util.STEAM_MOST_PLAYED_URL
 
@@ -31,12 +30,12 @@ class MostPlayedFragment : BaseFragment<FragmentMostPlayedBinding>(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressbar.visibility = View.VISIBLE
-        viewModel.getMostPlay(GAME_MOST_PLAYED_TEST, JSOUP_STEAM_MOST_PLAYED)
+        viewModel.getMostPlay(STEAM_MOST_PLAYED_URL, JSOUP_STEAM_MOST_PLAYED)
         binding.mostplayRcv.adapter = adapter
 
-        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setColorSchemeColors(resources.getColor(R.color.main))
         binding.refreshLayout.setOnRefreshListener {
-            viewModel.getMostPlay(GAME_MOST_PLAYED_TEST, JSOUP_STEAM_MOST_PLAYED)
+            viewModel.getMostPlay(STEAM_MOST_PLAYED_URL, JSOUP_STEAM_MOST_PLAYED)
             binding.refreshLayout.isRefreshing = false
         }
         collectFlow()
