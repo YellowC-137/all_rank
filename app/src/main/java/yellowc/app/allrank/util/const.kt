@@ -11,6 +11,9 @@ const val BOOK_STORE_API_URL = "http://book.interpark.com/api/"
 const val FOREIGN_MUSIC_URL = "https://www.officialcharts.com/charts/billboard-hot-100-chart/"
 const val MOVIE_BOXOFFICE_API_URL = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/"
 
+const val GAME_TOP_SELLING_TEST = "https://steamdb.info/stats/globaltopsellers/"
+const val GAME_MOST_PLAYED_TEST = "https://steamplayercount.com/popular"
+
 
 //Types
 const val JSOUP_KOREAN_MUSIC = "KOREAN"

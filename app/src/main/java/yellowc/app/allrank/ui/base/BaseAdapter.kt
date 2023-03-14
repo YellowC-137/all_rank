@@ -3,7 +3,7 @@ package yellowc.app.allrank.ui.base
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -21,10 +21,17 @@ class BaseAdapter(
             binding.apply {
                 model = item
                 if (item.img.isNullOrBlank()){
-                    itemImage.layoutParams = LinearLayout.LayoutParams(0, 0)
+                    itemImage.layoutParams = LinearLayoutCompat.LayoutParams(0, 0)
                 }
                 else{
                     Glide.with(itemImage.context).load(item.img).into(itemImage)
+                }
+
+                if (item.content.isNullOrBlank()){
+                    itemContent.layoutParams = LinearLayoutCompat.LayoutParams(0, 0)
+                }
+                if (item.owner.isNullOrBlank()){
+                    itemOwner.layoutParams = LinearLayoutCompat.LayoutParams(0, 0)
                 }
 
             }

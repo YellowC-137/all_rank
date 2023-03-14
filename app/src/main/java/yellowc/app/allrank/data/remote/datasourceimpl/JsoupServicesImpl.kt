@@ -163,8 +163,27 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
         return result
     }
 
+
+
     private fun getMostPlay(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
+        val doc: Document = Jsoup.connect(url).get()
+        Timber.e(doc.title())
+        val body = doc.body().getElementsByClass("app-table popular-page")
+        val tbody = doc.selectFirst("tbody")!!
+        for (i in 1..tbody.children().size)
+        {
+            val tr : Elements =  tbody.children()
+
+        }
+
+
+
+        return result
+    }
+
+
+    /* val result = ArrayList<JsoupResponse>()
         val doc: Document = Jsoup.connect(url).get()
         Timber.e(doc.title())
         val body = doc.body().getElementsByClass("content")
@@ -202,9 +221,8 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
             }
         }
 
-
         return result
-    }
+    * */
 
     private fun getReservation(url: String): List<JsoupResponse> {
         val result = ArrayList<JsoupResponse>()
