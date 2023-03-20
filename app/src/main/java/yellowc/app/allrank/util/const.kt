@@ -20,3 +20,7 @@ const val JSOUP_RESERVATION = "RESERVATION"
 const val JSOUP_TREND = "TREND"
 const val JSOUP_FOREIGN = "BILLBOARD"
 const val JSOUP_NEWS = "NEWS"
+
+//rankDiff
+const val UP = "UP"
+const val DOWN = "DOWN"

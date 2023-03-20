@@ -6,9 +6,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import yellowc.app.allrank.AllRankApplication
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentTrendBinding
 import yellowc.app.allrank.ui.base.BaseAdapter
@@ -33,13 +37,15 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
         viewModel.getSearched(TREND_URL, JSOUP_TREND)
         binding.trendRcv.adapter = adapter
 
-        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setColorSchemeColors(resources.getColor(R.color.main))
         binding.refreshLayout.setOnRefreshListener {
             viewModel.getSearched(TREND_URL, JSOUP_TREND)
             binding.refreshLayout.isRefreshing = false
         }
         collectFlow()
     }
+
+
 
 
     private fun collectFlow() {

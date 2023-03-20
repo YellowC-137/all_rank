@@ -4,12 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.ItemRankingBinding
 import yellowc.app.allrank.domain.models.BaseModel
+import yellowc.app.allrank.util.DOWN
+import yellowc.app.allrank.util.UP
 
 class BaseAdapter(
     private val itemClicked: (BaseModel) -> Unit
@@ -20,19 +24,13 @@ class BaseAdapter(
         fun bind(item: BaseModel, itemClicked: (BaseModel) -> Unit) {
             binding.apply {
                 model = item
-                if (item.img.isNullOrBlank()){
-                    itemImage.layoutParams = LinearLayoutCompat.LayoutParams(0, 0)
-                }
-                else{
-                    Glide.with(itemImage.context).load(item.img).into(itemImage)
-                }
+                Glide.with(itemImage.context).load(item.img).into(itemImage)
+                itemImage.isVisible = !item.img.isNullOrBlank()
+                itemContent.isVisible = !item.content.isNullOrBlank()
+                itemOwner.isVisible = !item.owner.isNullOrBlank()
 
-                if (item.content.isNullOrBlank()){
-                    itemContent.layoutParams = LinearLayoutCompat.LayoutParams(0, 0)
-                }
-                if (item.owner.isNullOrBlank()){
-                    itemOwner.layoutParams = LinearLayoutCompat.LayoutParams(0, 0)
-                }
+
+                itemContainer.setOnClickListener { itemClicked(item) }
 
             }
         }
