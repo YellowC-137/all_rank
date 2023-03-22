@@ -2,9 +2,7 @@
 
 - MVVM,AAC
 - Dagger-Hilt
-- RxJava-LiveData
 - Notification, AlarmManager
-- JUnit, Espresso UI
 
 음악,게임,영화,도서,트렌드의 차트를 보여주는 앱
 
