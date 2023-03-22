@@ -1,4 +1,4 @@
-package yellowc.app.allrank.ui.home.news
+package yellowc.app.allrank.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +10,7 @@ import yellowc.app.allrank.domain.usecases.GetJsoupUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class NewsViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val getJsoupUseCase: GetJsoupUseCase
 ) : ViewModel() {
     private val _news = MutableStateFlow<List<BaseModel>>(emptyList())
@@ -21,6 +21,14 @@ class NewsViewModel @Inject constructor(
         viewModelScope.launch {
             _news.emit(getJsoupUseCase.invoke(url, type))
         }
+    }
+
+    fun setAlarm() {
+
+    }
+
+    fun showNotification() {
+
     }
 
 }

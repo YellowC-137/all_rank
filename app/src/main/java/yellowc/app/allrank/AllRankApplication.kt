@@ -3,14 +3,15 @@ package yellowc.app.allrank
 import android.app.AlarmManager
 import android.app.Application
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.WorkRequest
+import android.content.pm.PackageManager
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
-import yellowc.app.allrank.ui.home.trend.TrendAlarmManager
+import yellowc.app.allrank.data.remote.api.JsoupService
+import yellowc.app.allrank.util.AlarmManagers
+import yellowc.app.allrank.util.BroadCastReceiver
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -19,19 +20,7 @@ class AllRankApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        initAlarmManager()
         instance = this
-    }
-
-    private fun initAlarmManager() {
-        val alarmManager =
-            ApplicationContext().getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-        val pendingIntent =
-            PendingIntent.getService(ApplicationContext(), 0, Intent(),
-                PendingIntent.FLAG_NO_CREATE)
-        if (pendingIntent != null && alarmManager != null) {
-            alarmManager.cancel(pendingIntent)
-        }
 
     }
 

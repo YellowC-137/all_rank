@@ -33,7 +33,6 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>(R.layout.fragment_news) {
         binding.progressbar.visibility = View.VISIBLE
         viewModel.getNews(NEWS_URL, JSOUP_NEWS)
         binding.newsRcv.adapter = adapter
-        TODO("news 링크 날짜 수정")
 
         binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
         binding.refreshLayout.setOnRefreshListener {
