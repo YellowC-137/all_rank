@@ -2,9 +2,7 @@
 
 - MVVM,AAC
 - Dagger-Hilt
-- RxJava-LiveData
 - Notification, AlarmManager
-- JUnit, Espresso UI
 
 음악,게임,영화,도서,트렌드의 차트를 보여주는 앱
 
@@ -22,6 +20,4 @@
 
 https://user-images.githubusercontent.com/55780312/224922611-3af131e5-2e09-4f20-bc54-8adeb22b5265.mp4
 
-
-TODO : detail 화면, 메인 화면들 랭킹정보 수정, top 랭크 수정, viewpager 추가?
 
