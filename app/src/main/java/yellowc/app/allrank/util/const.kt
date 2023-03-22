@@ -21,6 +21,13 @@ const val JSOUP_TREND = "TREND"
 const val JSOUP_FOREIGN = "BILLBOARD"
 const val JSOUP_NEWS = "NEWS"
 
+//notification
+const val NOTIFICATION_CHANNEL_NAME = "ALLRANK"
+const val NOTIFICATION_CHANNEL_DESCRIPTION = "NOW_RANKS"
+const val CHANNEL_ID ="ALLRANKCHANNEL"
+val NOTIFICATION_TITLE: CharSequence = "오늘의 주요 알림"
+
+
 //rankDiff
 const val UP = "UP"
 const val DOWN = "DOWN"
