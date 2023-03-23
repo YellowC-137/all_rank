@@ -129,4 +129,7 @@ dependencies {
     //workmanager
     implementation "androidx.work:work-runtime-ktx:2.8.0"
 
+    //permission
+    implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
+
 }
