@@ -1,9 +1,14 @@
 package yellowc.app.allrank.ui
 
 import android.Manifest
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.ComponentName
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import yellowc.app.allrank.AllRankApplication
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.ActivityMainBinding
@@ -52,36 +58,53 @@ class MainActivity : AppCompatActivity() {
         )
 
         getPermission()
-        //initAlarm()
+        //setAlram()
 
+    }
+
+    private fun setAlram() {
+        val context = AllRankApplication.ApplicationContext()
+        val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
+
+        val alarmIntent = Intent(context, BroadCastReceiver::class.java).let { intent ->
+            intent.putExtra("data", "TEST")
+            PendingIntent.getBroadcast(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE // FLAG_IMMUTABLE 추가
+            )
+        }
+
+
+        val intervalMillis = 3000L
+        val triggerTime = SystemClock.elapsedRealtime() + intervalMillis
+
+        alarmManager.setRepeating(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            triggerTime,
+            intervalMillis,
+            alarmIntent
+        )
+        Timber.e("TEST : ALRAM MANAGER")
     }
 
     private fun getPermission() {
-        TedPermission.create()
-            .setPermissionListener(object : PermissionListener {
-                //권한이 허용됐을 때
-                override fun onPermissionGranted() {}
-                //권한이 거부됐을 때
-                override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-                    finish()
-                }
-            })
-            .setDeniedMessage("권한을 허용해주세요.")// 권한이 없을 때 띄워주는 Dialog Message
-            .setPermissions(android.Manifest.permission.POST_NOTIFICATIONS)// 얻으려는 권한(여러개 가능)
-            .check()
-    }
-
-    private fun initAlarm() {
-        val receiver = ComponentName(AllRankApplication.instance.applicationContext, BroadCastReceiver::class.java)
-        AllRankApplication.instance.applicationContext.packageManager.setComponentEnabledSetting(
-            receiver,
-            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-            PackageManager.DONT_KILL_APP
-        )
-
-        val am =  AlarmManagers()
-        am.setAlarm(AllRankApplication.ApplicationContext())
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            TedPermission.create()
+                .setPermissionListener(object : PermissionListener {
+                    //권한이 허용됐을 때
+                    override fun onPermissionGranted() {}
+                    //권한이 거부됐을 때
+                    override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+                        Snackbar.make(binding.root,"권한을 허용해주세요.",Snackbar.LENGTH_LONG).show()
+                    }
+                })
+                .setDeniedMessage("권한을 허용해주세요.")// 권한이 없을 때 띄워주는 Dialog Message
+                .setPermissions(Manifest.permission.POST_NOTIFICATIONS)// 얻으려는 권한(여러개 가능)
+                .setPermissions(Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                .check()
+        }
     }
 
 }

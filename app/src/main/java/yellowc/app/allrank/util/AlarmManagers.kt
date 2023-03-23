@@ -1,30 +1,34 @@
 package yellowc.app.allrank.util
 
-import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Context.ALARM_SERVICE
 import android.content.Intent
-import yellowc.app.allrank.data.remote.api.JsoupService
+import android.os.Build
+import android.os.SystemClock
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.getSystemService
+import timber.log.Timber
+import yellowc.app.allrank.AllRankApplication
 import java.util.*
 
-@SuppressLint("ServiceCast")
 class AlarmManagers {
-
-    /*
-    TODO
-    1. 권한 설정
-    2. service나 async로 background로 jsoup 통신 사용하게 설정
-    3. 테스트 -> 그냥 실행시에 바로 띄우기 
-    * */
-    
-
     private var alarmMgr: AlarmManager? = null
-    private lateinit var alarmIntent: PendingIntent
 
-    fun setAlarm(context:Context) {
-        val intent = Intent(context, JsoupService::class.java) // usecase?
-        val pendingIntent = PendingIntent.getService(context, 0, intent, 0)
+    fun setAlarm(message: String) {
+        val context = AllRankApplication.ApplicationContext()
+        alarmMgr = AllRankApplication.ApplicationContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val alarmIntent = Intent(context, BroadCastReceiver::class.java).let { intent ->
+            intent.putExtra("data", message)
+            PendingIntent.getBroadcast(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE // FLAG_IMMUTABLE 추가
+            )
+        }
 
         // 오후 6시에 알람 설정
         val calendar: Calendar = Calendar.getInstance().apply {
@@ -40,6 +44,35 @@ class AlarmManagers {
             alarmIntent
         )
 
+    }
+
+    fun test(message: String) {
+        val context = AllRankApplication.ApplicationContext()
+        val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, BroadCastReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            NOTIFICATION_ID,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE // FLAG_IMMUTABLE 추가
+        )
+        val intervalMillis = 90 * 1000 // 10분
+        val triggerTime = SystemClock.elapsedRealtime() + intervalMillis
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setAndAllowWhileIdle(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                triggerTime,
+                pendingIntent
+            )
+        } else {
+            alarmManager.set(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                triggerTime,
+                pendingIntent
+            )
+        }
+        Timber.e("TEST : ALRAM MANAGER")
     }
 
 }

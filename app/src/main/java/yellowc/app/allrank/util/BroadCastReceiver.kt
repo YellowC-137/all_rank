@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import timber.log.Timber
 import yellowc.app.allrank.R
 import yellowc.app.allrank.ui.MainActivity
 
@@ -17,24 +18,29 @@ class BroadCastReceiver : BroadcastReceiver() {
 
     //Broadcast 수신시 자동 호출
     override fun onReceive(context: Context, intent: Intent) {
+        Timber.e("TEST : RECEIVE")
         notificationManager = context.getSystemService(
             Context.NOTIFICATION_SERVICE
         ) as NotificationManager
 
+        val data = intent.getStringExtra("data")
+
         if (intent.action == "android.intent.action.BOOT_COMPLETED") {
             //알람을 받아보자
-            createNotificationChannel()
-            sendNotification(context, "TEST")
+            createNotification()
+            if (data != null) {
+                buildNotification(context, data)
+            }
         }
 
     }
 
-    private fun createNotificationChannel() {
+    private fun createNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 CHANNEL_ID,
                 NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_HIGH
                 /*
                 1. IMPORTANCE_HIGH = 알림음이 울리고 헤드업 알림으로 표시
                 2. IMPORTANCE_DEFAULT = 알림음 울림
@@ -43,16 +49,18 @@ class BroadCastReceiver : BroadcastReceiver() {
                  */
             )
             notificationChannel.enableLights(true) // 불빛
-            notificationChannel.lightColor = Color.RED // 색상
+            notificationChannel.lightColor = Color.YELLOW // 색상
+            notificationChannel.enableVibration(true)//진동
             notificationChannel.description = NOTIFICATION_CHANNEL_DESCRIPTION // 채널 정보
             notificationManager.createNotificationChannel(
                 notificationChannel
             )
+            Timber.e("TEST : CREATEBROADCAST")
         }
     }
 
 
-    private fun sendNotification(context: Context, message: String) {
+    private fun buildNotification(context: Context, message: String) {
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
@@ -71,12 +79,13 @@ class BroadCastReceiver : BroadcastReceiver() {
             .setSmallIcon(R.drawable.ic_launcher_foreground) // 아이콘
             .setContentTitle("현재 실시간 검색어를 확인해 보세요!") // 제목
             .setContentText(message) // 내용
-            .setContentIntent(contentPendingIntent)
+            //.setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
 
         notificationManager.notify(NOTIFICATION_ID, builder.build())
+        Timber.e("TEST : SENDBROADCAST")
     }
 
 
