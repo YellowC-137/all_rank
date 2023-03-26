@@ -2,6 +2,7 @@ package yellowc.app.allrank
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import java.time.LocalDate
@@ -34,5 +35,7 @@ class AllRankApplication : Application() {
 
             return Triple(today, weekAgo, target)
         }
+
+
     }
 }

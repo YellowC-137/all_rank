@@ -1,6 +1,7 @@
 package yellowc.app.allrank.ui
 
 import android.Manifest
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import yellowc.app.allrank.AllRankApplication
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.ActivityMainBinding
 import yellowc.app.allrank.util.AlarmManagers
@@ -44,15 +46,14 @@ class MainActivity : AppCompatActivity() {
     private fun getPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             TedPermission.create()
-                .setDeniedMessage("권한을 허용해주세요.")// 권한이 없을 때 띄워주는 Dialog Message
                 .setPermissions(Manifest.permission.POST_NOTIFICATIONS)// 얻으려는 권한(여러개 가능)
-                .setPermissions(Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
                 .setPermissionListener(object : PermissionListener {
                     //권한이 허용됐을 때
                     override fun onPermissionGranted() {
                         val alarm = AlarmManagers()
-                        alarm.test()
+                        //alarm.test()
                         Timber.e("ALRAM")
+                        alarm.setAlarm()
                     }
 
                     //권한이 거부됐을 때
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                         Snackbar.make(binding.root, "권한을 허용해주세요.", Snackbar.LENGTH_LONG).show()
                     }
                 })
+                .setDeniedMessage("권한을 허용해주세요.")// 권한이 없을 때 띄워주는 Dialog Message
                 .check()
         }
     }

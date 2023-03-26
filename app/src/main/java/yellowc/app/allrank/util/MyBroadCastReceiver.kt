@@ -10,12 +10,15 @@ class MyBroadCastReceiver : BroadcastReceiver() {
 
     //Broadcast 수신시 자동 호출
     override fun onReceive(context: Context, intent: Intent) {
+        Timber.e("RECEIVE")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Timber.e("FOREGROUND")
-            context.startForegroundService(intent)
+            val serviceIntent = Intent(context,MyService::class.java)
+            context.startForegroundService(serviceIntent)
         } else {
             Timber.e("SERVICE")
-            context.startService(intent)
+            val serviceIntent = Intent(context,MyService::class.java)
+            context.startService(serviceIntent)
         }
     }
 

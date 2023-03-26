@@ -11,14 +11,13 @@ import java.util.*
 
 class AlarmManagers {
     private var alarmMgr: AlarmManager? = null
+    val context = AllRankApplication.ApplicationContext()
 
-    fun setAlarm(message: String) {
-        val context = AllRankApplication.ApplicationContext()
+    fun setAlarm() {
         alarmMgr = AllRankApplication.ApplicationContext()
-            .getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            .getSystemService(ALARM_SERVICE) as AlarmManager
 
         val alarmIntent = Intent(context, MyBroadCastReceiver::class.java).let { intent ->
-            intent.putExtra("data", message)
             PendingIntent.getBroadcast(
                 context,
                 0,
@@ -34,8 +33,8 @@ class AlarmManagers {
         }
 
         // 매일 하루에 한번씩 반복함.
-        alarmMgr?.setInexactRepeating(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+        alarmMgr!!.setRepeating(
+            AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             AlarmManager.INTERVAL_DAY,
             alarmIntent
@@ -43,19 +42,19 @@ class AlarmManagers {
     }
 
     fun test() {
-        val context = AllRankApplication.ApplicationContext()
         val alarmMgr = context.getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, MyBroadCastReceiver::class.java)
+        intent.action = "yellowc.app.allrank.ACTION_ALARM"
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             NOTIFICATION_ID,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val firstTriggerMillis = System.currentTimeMillis()+10000L
+        val firstTriggerMillis = System.currentTimeMillis()+5000L
 
         alarmMgr.setExactAndAllowWhileIdle(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            AlarmManager.RTC_WAKEUP,
             firstTriggerMillis,
             pendingIntent
         )

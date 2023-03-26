@@ -10,6 +10,7 @@ import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -31,27 +32,27 @@ class MyService : Service() {
         notificationManager = context.getSystemService(
             Context.NOTIFICATION_SERVICE
         ) as NotificationManager
+        createNotification()
         Timber.e("SERVICE START")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // 주기적으로 jsoup 통신을 수행
         Timber.e("onSTARTCOMMAND")
-        createNotification()
         var data = ""
 
-
         CoroutineScope(Dispatchers.IO).launch {
-            val result = Jsoup()
+            val result = async { Jsoup() }.await()
             for (i in result){
-                data+= "${i.rank}. {${i.title}}\n"
+                data+= "${i.rank}. ${i.title}\n"
             }
+            val noti : Notification = buildNotification(context, data)
+            startForeground(NOTIFICATION_ID, noti)
+            notificationManager.notify(NOTIFICATION_ID, noti)
+            Timber.e("TEST :"+data)
         }
-        Timber.e("TEST :"+data)
 
-        val noti : Notification = buildNotification(context, data)
-        startForeground(NOTIFICATION_ID, noti)
-        notificationManager.notify(NOTIFICATION_ID, noti)
+
 
         return START_STICKY
     }
@@ -63,6 +64,7 @@ class MyService : Service() {
 
 
     private fun createNotification() {
+        Timber.e("TEST : CREATEBROADCAST")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 CHANNEL_ID,
@@ -76,12 +78,13 @@ class MyService : Service() {
             notificationManager.createNotificationChannel(
                 notificationChannel
             )
-            Timber.e("TEST : CREATEBROADCAST")
+
         }
     }
 
 
     private fun buildNotification(context: Context, message: String): Notification {
+        Timber.e("build TEST :"+message)
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
@@ -92,11 +95,15 @@ class MyService : Service() {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher_round) // 아이콘
             .setContentTitle("현재 실시간 검색어를 확인해 보세요!") // 제목
-            .setContentText(message) // 내용
-            .setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
+
+        val bigTextStyle = NotificationCompat.BigTextStyle()
+        bigTextStyle.setBigContentTitle("현재 실시간 검색어를 확인해 보세요!") // 펼쳐졌을 때의 제목
+        bigTextStyle.bigText(message) // 펼쳐졌을 때의 내용
+        builder.setStyle(bigTextStyle)
+
 
         Timber.e("TEST : SENDBROADCAST")
 
@@ -106,7 +113,7 @@ class MyService : Service() {
     private fun Jsoup(): ArrayList<BaseModel> {
 
             val result = ArrayList<BaseModel>()
-            val doc: Document = Jsoup.connect(JSOUP_TREND).get()
+            val doc: Document = Jsoup.connect(TREND_URL).get()
             val div = doc.body().select("div.col-sm-12")
             val table = div.select("table.table-hover.table-striped").first()
             val trs = table!!.select("tr:not([class])")
