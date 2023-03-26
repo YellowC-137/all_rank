@@ -27,6 +27,11 @@ class AlarmManagers {
         }
 
         // 오후 6시에 알람 설정
+        /*TODO
+        알람이 설정된 시간이 현재 시간보다 이전이면, 알람 매니저가 즉시 작동합니다.
+현재 시간이 오전 9시인 경우, calendar 객체가 6시로 설정된 후 setRepeating() 메소드가 호출되면,
+ calendar.timeInMillis는 이전 날짜로 설정되므로 즉시 알람이 실행
+         */
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, 18)
@@ -39,27 +44,6 @@ class AlarmManagers {
             AlarmManager.INTERVAL_DAY,
             alarmIntent
         )
-    }
-
-    fun test() {
-        val alarmMgr = context.getSystemService(ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, MyBroadCastReceiver::class.java)
-        intent.action = "yellowc.app.allrank.ACTION_ALARM"
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            NOTIFICATION_ID,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-        val firstTriggerMillis = System.currentTimeMillis()+5000L
-
-        alarmMgr.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            firstTriggerMillis,
-            pendingIntent
-        )
-
-        Timber.e("TEST : ALRAM MANAGER")
     }
 
     fun cancelAlarm(intent: Intent, requestCode: Int) {

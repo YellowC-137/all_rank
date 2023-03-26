@@ -40,8 +40,25 @@ class MainActivity : AppCompatActivity() {
             View.MeasureSpec.UNSPECIFIED,
             View.MeasureSpec.UNSPECIFIED
         )
+
+        // 프래그먼트 백 스택에 있는 경우 뒤로 가기 버튼 누르면 이전 프래그먼트로 이동
+        supportFragmentManager.addOnBackStackChangedListener {
+            val count = supportFragmentManager.backStackEntryCount
+            if (count == 0) {
+                finish()
+            }
+        }
+
         getPermission()
     }
+
+override fun onBackPressed() {
+    if (supportFragmentManager.backStackEntryCount > 0) {
+        supportFragmentManager.popBackStack()
+    } else {
+        super.onBackPressed()
+    }
+}
 
     private fun getPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

@@ -17,13 +17,20 @@ import yellowc.app.allrank.databinding.FragmentLibraryBinding
 import yellowc.app.allrank.domain.models.LibraryModel
 import yellowc.app.allrank.ui.base.BaseAdapter
 import yellowc.app.allrank.ui.base.BaseFragment
+import yellowc.app.allrank.ui.detail.DetailFragment
+
 @AndroidEntryPoint
 class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_library) {
     private val viewModel: LibraryViewModel by viewModels()
     private val adapter: BaseAdapter by lazy {
         BaseAdapter(
             itemClicked = {
-                //TODO
+                    item ->
+                val detailFragment = DetailFragment()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                //TODO transaction.replace(R.id.fragment_container, detailFragment)
+                transaction.addToBackStack(null)
+                transaction.commit()
             }
         )
     }
@@ -45,6 +52,7 @@ class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_l
             binding.refreshLayout.isRefreshing = false
         }
         collectFlow()
+
     }
 
     private fun collectFlow() {
