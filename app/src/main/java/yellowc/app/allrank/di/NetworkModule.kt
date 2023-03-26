@@ -28,7 +28,32 @@ object NetworkModule {
         coerceInputValues = true
     }
 
-    //TODO jsoup
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class YouTubeRetrofit
+
+    @Provides
+    @Singleton
+    @YouTubeRetrofit
+    fun provideYouTubeRetrofit(
+        okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(YOUTUBE_API_URL)
+            .client(okHttpClient)
+            .addConverterFactory(converterFactory)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideYouTubeApiService(
+        @YouTubeRetrofit retrofit: Retrofit,
+    ): YouTubeService {
+        return retrofit.create(YouTubeService::class.java)
+    }
+
 
     @Qualifier
     @Retention(AnnotationRetention.RUNTIME)
@@ -133,7 +158,6 @@ object NetworkModule {
     ): MovieSearchService {
         return retrofit.create(MovieSearchService::class.java)
     }
-
 
 
     @Provides

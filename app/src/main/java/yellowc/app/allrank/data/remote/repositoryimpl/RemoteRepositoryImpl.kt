@@ -8,9 +8,11 @@ import yellowc.app.allrank.data.remote.datasource.RemoteDataSource
 import yellowc.app.allrank.data.remote.response.bookstore_response.Item
 import yellowc.app.allrank.data.remote.response.boxoffice_response.WeeklyBoxOffice
 import yellowc.app.allrank.data.remote.response.library_response.Doc
+import yellowc.app.allrank.data.remote.response.youtube_response.YoutubeResponse
 import yellowc.app.allrank.di.DispatcherModule
 import yellowc.app.allrank.domain.models.BaseModel
 import yellowc.app.allrank.domain.models.MyResult
+import yellowc.app.allrank.domain.models.Videos
 import yellowc.app.allrank.domain.repositories.RetrofitRepositories
 import javax.inject.Inject
 
@@ -125,6 +127,37 @@ class RemoteRepositoryImpl @Inject constructor(
                 }
             }
 
+        }
+        return result
+    }
+
+    override suspend fun getVideoResult(query: String): List<Videos> {
+        val result = ArrayList<Videos>()
+        withContext(dispatcherIO) {
+            val responseList = async {
+                remoteDataSource.getVideo(query = query)
+            }
+            val youtube: List<yellowc.app.allrank.data.remote.response.youtube_response.Item>
+
+            when (val response = responseList.await()) {
+                is MyResult.Success -> {
+                    youtube = response.data.items
+                }
+                is MyResult.Error -> {
+                    return@withContext
+                }
+            }
+            for (vid in youtube) {
+                val you = vid.snippet
+                val temp = Videos(
+                    title = you.title,
+                    img = you.thumbnails.high.url,
+                    date = you.publishTime,
+                    channel = you.channelTitle,
+                    videoId = vid.id.videoId
+                )
+                result.add(temp)
+            }
         }
         return result
     }

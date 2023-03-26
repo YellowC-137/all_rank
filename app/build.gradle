@@ -33,6 +33,7 @@ android {
         buildConfigField("String", "MOVIE_API_KEY", properties.getProperty("MOVIE_API_KEY"))
         buildConfigField("String", "NAVER_API_KEY", properties.getProperty("NAVER_API_KEY"))
         buildConfigField("String", "NAVER_SECRET", properties.getProperty("NAVER_SECRET"))
+        buildConfigField("String", "YOUTUBE_API_KEY", properties.getProperty("YOUTUBE_API_KEY"))
     }
 
     buildTypes {

@@ -1,10 +1,11 @@
 package yellowc.app.allrank.domain.repositories
 
 import yellowc.app.allrank.domain.models.BaseModel
-import yellowc.app.allrank.domain.models.ForeignMusicModel
+import yellowc.app.allrank.domain.models.Videos
 
 interface RetrofitRepositories {
     suspend fun getBookStoreResult(): List<BaseModel>
     suspend fun getLibraryResult(start: String, end: String): List<BaseModel>
-    suspend fun getBoxOfficeResult(target:String):List<BaseModel>
+    suspend fun getBoxOfficeResult(target: String): List<BaseModel>
+    suspend fun getVideoResult(query: String): List<Videos>
 }
