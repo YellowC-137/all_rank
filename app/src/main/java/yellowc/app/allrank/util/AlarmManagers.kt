@@ -5,10 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
-import android.os.Build
-import android.os.SystemClock
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
 import timber.log.Timber
 import yellowc.app.allrank.AllRankApplication
 import java.util.*
@@ -18,9 +14,10 @@ class AlarmManagers {
 
     fun setAlarm(message: String) {
         val context = AllRankApplication.ApplicationContext()
-        alarmMgr = AllRankApplication.ApplicationContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmMgr = AllRankApplication.ApplicationContext()
+            .getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        val alarmIntent = Intent(context, BroadCastReceiver::class.java).let { intent ->
+        val alarmIntent = Intent(context, MyBroadCastReceiver::class.java).let { intent ->
             intent.putExtra("data", message)
             PendingIntent.getBroadcast(
                 context,
@@ -38,41 +35,38 @@ class AlarmManagers {
 
         // 매일 하루에 한번씩 반복함.
         alarmMgr?.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
             calendar.timeInMillis,
             AlarmManager.INTERVAL_DAY,
             alarmIntent
         )
-
     }
 
-    fun test(message: String) {
+    fun test() {
         val context = AllRankApplication.ApplicationContext()
-        val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, BroadCastReceiver::class.java)
+        val alarmMgr = context.getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, MyBroadCastReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             NOTIFICATION_ID,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE // FLAG_IMMUTABLE 추가
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val intervalMillis = 90 * 1000 // 10분
-        val triggerTime = SystemClock.elapsedRealtime() + intervalMillis
+        val firstTriggerMillis = System.currentTimeMillis()+10000L
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setAndAllowWhileIdle(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                triggerTime,
-                pendingIntent
-            )
-        } else {
-            alarmManager.set(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                triggerTime,
-                pendingIntent
-            )
-        }
+        alarmMgr.setExactAndAllowWhileIdle(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            firstTriggerMillis,
+            pendingIntent
+        )
+
         Timber.e("TEST : ALRAM MANAGER")
+    }
+
+    fun cancelAlarm(intent: Intent, requestCode: Int) {
+        val context = AllRankApplication.ApplicationContext()
+        val pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmMgr!!.cancel(pendingIntent)
     }
 
 }

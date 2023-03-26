@@ -23,12 +23,9 @@ import yellowc.app.allrank.databinding.FragmentHomeBinding
 import yellowc.app.allrank.ui.base.BaseFragment
 import yellowc.app.allrank.util.*
 
-@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
-    private val viewModel: HomeViewModel by viewModels()
     private lateinit var viewpager: ViewPager2
     private lateinit var pagerAdapter: HomeViewPagerAdapter
-    private lateinit var am : AlarmManagers
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,33 +42,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 }
             }
         }.attach()
-        alram()
-        collectFlow()
-
 
     }
 
-    private fun alram() {
-        viewModel.getData(TREND_URL, JSOUP_TREND)
-        am = AlarmManagers()
-
-        Timber.e("TEST : ALRAM MANAGER")
-    }
-
-
-    private fun collectFlow() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.data.collectLatest {
-                    if (it.isNotEmpty()) {
-                        var data = ""
-                        for (i in it){
-                            data += "${i.rank}. ${i.title}\n"
-                        }
-                        am.setAlarm(data)
-                    }
-                }
-            }
-        }
-    }
 }

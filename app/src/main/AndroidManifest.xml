@@ -4,9 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".AllRankApplication"
@@ -21,12 +23,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <service
+            android:directBootAware="true"
+            android:foregroundServiceType="dataSync"
             android:name=".util.MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <receiver
-            android:name=".util.BroadCastReceiver"
+            android:name=".util.MyBroadCastReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">

@@ -1,17 +1,9 @@
 package yellowc.app.allrank
 
-import android.app.AlarmManager
 import android.app.Application
-import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
-import yellowc.app.allrank.data.remote.api.JsoupService
-import yellowc.app.allrank.util.AlarmManagers
-import yellowc.app.allrank.util.BroadCastReceiver
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
