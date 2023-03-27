@@ -1,5 +1,6 @@
 package yellowc.app.allrank.di
 
+import android.graphics.Movie
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -135,17 +136,17 @@ object NetworkModule {
 
     @Qualifier
     @Retention(AnnotationRetention.RUNTIME)
-    annotation class MovieRetrofit
+    annotation class SearchRetrofit
 
     @Provides
     @Singleton
-    @MovieRetrofit
-    fun provideMovieRetrofit(
+    @SearchRetrofit
+    fun provideSearchRetrofit(
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(MOVIE_SEARCH_NAVER_API_URL)
+            .baseUrl(SEARCH_NAVER_API_URL)
             .client(okHttpClient)
             .addConverterFactory(converterFactory)
             .build()
@@ -153,10 +154,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMovieApiService(
-        @MovieRetrofit retrofit: Retrofit,
-    ): MovieSearchService {
-        return retrofit.create(MovieSearchService::class.java)
+    fun provideSearchApiService(
+        @SearchRetrofit retrofit: Retrofit,
+    ): SearchService {
+        return retrofit.create(SearchService::class.java)
     }
 
 

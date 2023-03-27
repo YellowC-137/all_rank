@@ -1,4 +1,4 @@
-package yellowc.app.allrank.data.remote.response.movie_response
+package yellowc.app.allrank.data.remote.response.movie_search_response
 
 import kotlinx.serialization.Serializable
 

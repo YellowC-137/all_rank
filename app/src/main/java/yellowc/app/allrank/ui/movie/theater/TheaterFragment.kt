@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -14,6 +15,8 @@ import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentTheaterBinding
 import yellowc.app.allrank.ui.base.BaseAdapter
 import yellowc.app.allrank.ui.base.BaseFragment
+import yellowc.app.allrank.ui.movie.MovieFragmentDirections
+import yellowc.app.allrank.util.MOVIE_DETAIL
 
 @AndroidEntryPoint
 class TheaterFragment : BaseFragment<FragmentTheaterBinding>(R.layout.fragment_theater) {
@@ -21,7 +24,10 @@ class TheaterFragment : BaseFragment<FragmentTheaterBinding>(R.layout.fragment_t
     private val adapter: BaseAdapter by lazy {
         BaseAdapter(
             itemClicked = {
-                //TODO
+                val action = MovieFragmentDirections.actionNavigationMovieToDetailFragment(
+                    MOVIE_DETAIL, it
+                )
+                requireView().findNavController().navigate(action)
             }
         )
     }

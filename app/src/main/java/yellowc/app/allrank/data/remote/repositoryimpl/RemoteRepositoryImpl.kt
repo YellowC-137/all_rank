@@ -5,14 +5,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import yellowc.app.allrank.data.remote.datasource.RemoteDataSource
+import yellowc.app.allrank.data.remote.response.book_search_response.BookSearchResponse
 import yellowc.app.allrank.data.remote.response.bookstore_response.Item
 import yellowc.app.allrank.data.remote.response.boxoffice_response.WeeklyBoxOffice
 import yellowc.app.allrank.data.remote.response.library_response.Doc
-import yellowc.app.allrank.data.remote.response.youtube_response.YoutubeResponse
 import yellowc.app.allrank.di.DispatcherModule
-import yellowc.app.allrank.domain.models.BaseModel
-import yellowc.app.allrank.domain.models.MyResult
-import yellowc.app.allrank.domain.models.Videos
+import yellowc.app.allrank.domain.models.*
 import yellowc.app.allrank.domain.repositories.RetrofitRepositories
 import javax.inject.Inject
 
@@ -99,7 +97,7 @@ class RemoteRepositoryImpl @Inject constructor(
                     boxOffice = response.data.boxOfficeResult.weeklyBoxOfficeList
                     for (movie in boxOffice) {
                         val movieInfo = async {
-                            remoteDataSource.getMovie(movie = movie.movieNm)
+                            remoteDataSource.getMovieSearch(movie = movie.movieNm)
                         }
                         Timber.e(movie.movieNm)
                         when (val responseMovieInfo = movieInfo.await()) {
@@ -155,6 +153,42 @@ class RemoteRepositoryImpl @Inject constructor(
                     date = you.publishTime,
                     channel = you.channelTitle,
                     videoId = vid.id.videoId
+                )
+                result.add(temp)
+            }
+        }
+        return result
+    }
+
+    override suspend fun getNewsSearchResult(news: String): List<NewsModel> {
+        //TODO("Not yet implemented")
+        return emptyList()
+    }
+
+    override suspend fun getBookSearchResult(book: String): List<BookModel> {
+        val result = ArrayList<BookModel>()
+        withContext(dispatcherIO) {
+            val responseList = async {
+                remoteDataSource.getBookSearch(book)
+            }
+            val books: BookSearchResponse
+
+            when (val response = responseList.await()) {
+                is MyResult.Success -> {
+                    books = response.data
+                }
+                is MyResult.Error -> {
+                    return@withContext
+                }
+            }
+            for (book in books.items) {
+                val temp = BookModel(
+                    title = book.title,
+                    pubDate = book.pubdate,
+                    publisher = book.publisher,
+                    description = book.description,
+                    img = book.image,
+                    author = book.author
                 )
                 result.add(temp)
             }

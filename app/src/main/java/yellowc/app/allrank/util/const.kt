@@ -10,7 +10,7 @@ const val LIBRARY_API_URL ="http://data4library.kr/api/"
 const val BOOK_STORE_API_URL = "http://book.interpark.com/api/"
 const val FOREIGN_MUSIC_URL = "https://www.officialcharts.com/charts/billboard-hot-100-chart/"
 const val MOVIE_BOXOFFICE_API_URL = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/"
-const val MOVIE_SEARCH_NAVER_API_URL = "https://openapi.naver.com/v1/search/"
+const val SEARCH_NAVER_API_URL = "https://openapi.naver.com/v1/search/"
 const val YOUTUBE_API_URL ="https://www.googleapis.com/youtube/v3/"
 
 //Types
@@ -29,6 +29,12 @@ const val CHANNEL_ID ="ALLRANKCHANNEL"
 const val NOTIFICATION_ID = 137
 val NOTIFICATION_TITLE: CharSequence = "오늘의 주요 알림"
 
+//deatil type
+const val BOOK_DETAIL = "BOOK"
+const val GAME_DETAIL = "GAME"
+const val NEWS_DETAIL = "NEWS"
+const val MOVIE_DETAIL = "MOVIE"
+const val MUSIC_DETAIL = "MUSIC"
 
 //rankDiff
 const val UP = "UP"

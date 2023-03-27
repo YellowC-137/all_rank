@@ -23,7 +23,5 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun getData() {}
-
     fun getPeople() {}
 }

@@ -1,9 +1,9 @@
-package yellowc.app.allrank.data.remote.response.movie_response
+package yellowc.app.allrank.data.remote.response.news_search_response
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieResponse(
+data class NewsSearchResponse(
     val display: Int,
     val items: List<Item>,
     val lastBuildDate: String,

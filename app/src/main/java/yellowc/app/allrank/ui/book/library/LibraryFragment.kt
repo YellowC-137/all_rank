@@ -1,23 +1,23 @@
 package yellowc.app.allrank.ui.book.library
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import yellowc.app.allrank.AllRankApplication
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentLibraryBinding
-import yellowc.app.allrank.domain.models.LibraryModel
 import yellowc.app.allrank.ui.base.BaseAdapter
 import yellowc.app.allrank.ui.base.BaseFragment
+import yellowc.app.allrank.ui.book.BookFragmentDirections
 import yellowc.app.allrank.ui.detail.DetailFragment
+import yellowc.app.allrank.util.BOOK_DETAIL
 
 @AndroidEntryPoint
 class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_library) {
@@ -25,12 +25,11 @@ class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_l
     private val adapter: BaseAdapter by lazy {
         BaseAdapter(
             itemClicked = {
-                    item ->
-                val detailFragment = DetailFragment()
-                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                //TODO transaction.replace(R.id.fragment_container, detailFragment)
-                transaction.addToBackStack(null)
-                transaction.commit()
+                val action = BookFragmentDirections.actionNavigationBookToDetailFragment(
+                    BOOK_DETAIL, it
+                )
+                requireView().findNavController().navigate(action)
+
             }
         )
     }

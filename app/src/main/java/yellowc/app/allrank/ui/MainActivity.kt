@@ -1,7 +1,6 @@
 package yellowc.app.allrank.ui
 
 import android.Manifest
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -14,7 +13,6 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import yellowc.app.allrank.AllRankApplication
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.ActivityMainBinding
 import yellowc.app.allrank.util.AlarmManagers
@@ -36,10 +34,12 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
-        binding.navView.measure(
-            View.MeasureSpec.UNSPECIFIED,
-            View.MeasureSpec.UNSPECIFIED
-        )
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id) {
+                R.id.detailFragment -> navView.visibility = View.GONE
+                else -> navView.visibility = View.VISIBLE
+            }
+        }
 
         // 프래그먼트 백 스택에 있는 경우 뒤로 가기 버튼 누르면 이전 프래그먼트로 이동
         supportFragmentManager.addOnBackStackChangedListener {
@@ -52,13 +52,13 @@ class MainActivity : AppCompatActivity() {
         getPermission()
     }
 
-override fun onBackPressed() {
-    if (supportFragmentManager.backStackEntryCount > 0) {
-        supportFragmentManager.popBackStack()
-    } else {
-        super.onBackPressed()
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
     }
-}
 
     private fun getPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
