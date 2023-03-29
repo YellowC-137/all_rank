@@ -5,16 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import timber.log.Timber
 import yellowc.app.allrank.databinding.ItemPeopleBinding
 import yellowc.app.allrank.domain.models.People
 
-class PeopleAdapter() :
-    ListAdapter<People, PeopleAdapter.PeopleViewHolder>(diffUtil) {
+class PeopleAdapter : ListAdapter<People, PeopleAdapter.PeopleViewHolder>(diffUtil) {
 
     inner class PeopleViewHolder(private val binding: ItemPeopleBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: People) {
             binding.apply {
+                Timber.e(item.name)
                 people = item
 
             }

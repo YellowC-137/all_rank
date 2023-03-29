@@ -8,5 +8,6 @@ data class JsoupResponse(
     val title : String,
     val ImgUrl :String?,
     val description: String?,
-    val owner:String?
+    val owner:String?,
+    val link:String?
 )

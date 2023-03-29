@@ -63,7 +63,8 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                 title = title,
                 owner = "",
                 ImgUrl = "",
-                description = ""
+                description = "",
+                link = ""
             )
             result.add(temp)
         }
@@ -86,7 +87,8 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                 title = title,
                 owner = source,
                 ImgUrl = "",
-                description = ""
+                description = "",
+                link = link
             )
             result.add(temp)
             rank += 1
@@ -114,7 +116,8 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                     title = title,
                     ImgUrl = covers,
                     owner = artist,
-                    description = "$label Records"
+                    description = "$label Records",
+                    link = ""
                 )
                 result.add(temp)
             }
@@ -147,7 +150,8 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                     rank = cnt.toString(),
                     owner = platform,
                     description = "$rate 점",
-                    ImgUrl = img
+                    ImgUrl = img,
+                    link = ""
                 )
                 result.add(temp)
             }
@@ -173,7 +177,8 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                 title = title,
                 ImgUrl = img,
                 owner = "현재 플레이어 수 :$player 명",
-                description = "이주 최대 플레이어 수: $max 명"
+                description = "이주 최대 플레이어 수: $max 명",
+                link = ""
             )
             cnt += 1
             result.add(temp)
@@ -213,7 +218,8 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                         title = title,
                         ImgUrl = img,
                         owner = "예매율: $reservation",
-                        description = date
+                        description = date,
+                        link = ""
                     )
                     result.add(temp)
                 }
@@ -240,7 +246,8 @@ class JsoupServicesImpl @Inject constructor() : JsoupService {
                 title = songs[i].select("a").text(),
                 ImgUrl = covers[i].select("img").attr("src").toString(),
                 owner = artists[i].select("a").text(),
-                description = albums[i].select("a").text()
+                description = albums[i].select("a").text(),
+                link = ""
             )
             result.add(temp)
         }

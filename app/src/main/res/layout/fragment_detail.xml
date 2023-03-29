@@ -10,192 +10,137 @@
             type="yellowc.app.allrank.domain.models.BaseModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".ui.detail.DetailFragment">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:fitsSystemWindows="true">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
+            <ImageView
+                android:id="@+id/iv_main"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                android:src="@color/black"
+                app:image="@{data.img}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{data.title}"
+                app:layout_constraintStart_toEndOf="@id/iv_main"
+                app:layout_constraintTop_toTopOf="@id/iv_main" />
+
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{data.owner}"
+                app:layout_constraintStart_toEndOf="@id/iv_main"
+                app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="날짜"
+                app:layout_constraintStart_toEndOf="@id/iv_main"
+                app:layout_constraintTop_toBottomOf="@id/tv_author" />
+
+            <TextView
+                android:id="@+id/tv_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="별점"
+                app:layout_constraintStart_toEndOf="@id/iv_main"
+                app:layout_constraintTop_toBottomOf="@id/tv_date" />
+
+            <TextView
+                android:id="@+id/tv_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="장르"
+                app:layout_constraintStart_toEndOf="@id/iv_main"
+                app:layout_constraintTop_toBottomOf="@id/tv_rate" />
+
+            <TextView
+                android:id="@+id/tv_content_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="줄거리"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_main" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{data.content}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_content_title" />
+
+            <TextView
+                android:text="배우"
+                android:id="@+id/tv_people_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_people"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:fitsSystemWindows="true"
-                app:contentScrim="@color/main"
-                app:expandedTitleMarginEnd="24dp"
-                app:expandedTitleMarginStart="24dp"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:title="@{data.title}">
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_people_title"
+                tools:listitem="@layout/item_people" />
 
-                <ImageView
-                    android:id="@+id/collapsing_toolbar_Image"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_gravity="center"
-                    android:fitsSystemWindows="true"
-                    android:scaleType="fitXY"
-                    app:image="@{data.img}"
-                    app:layout_collapseMode="parallax" />
+            <TextView
+                android:id="@+id/tv_video_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="관련 영상"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rcv_people" />
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize" />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_video"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_video_title"
+                tools:listitem="@layout/item_video" />
 
-                <ImageView
-                    android:id="@+id/iv_main"
-                    android:layout_width="150dp"
-                    android:layout_height="200dp"
-                    android:layout_margin="8dp"
-                    android:src="@color/black"
-                    app:image="@{data.img}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@{data.title}"
-                    app:layout_constraintStart_toEndOf="@id/iv_main"
-                    app:layout_constraintTop_toTopOf="@id/iv_main" />
-
-                <TextView
-                    android:id="@+id/tv_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@{data.owner}"
-                    app:layout_constraintStart_toEndOf="@id/iv_main"
-                    app:layout_constraintTop_toBottomOf="@id/tv_title" />
-
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="날짜"
-                    app:layout_constraintStart_toEndOf="@id/iv_main"
-                    app:layout_constraintTop_toBottomOf="@id/tv_author" />
-
-                <TextView
-                    android:id="@+id/tv_rate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="별점"
-                    app:layout_constraintStart_toEndOf="@id/iv_main"
-                    app:layout_constraintTop_toBottomOf="@id/tv_date" />
-
-                <TextView
-                    android:id="@+id/tv_genre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="장르"
-                    app:layout_constraintStart_toEndOf="@id/iv_main"
-                    app:layout_constraintTop_toBottomOf="@id/tv_rate" />
-
-                <TextView
-                    android:id="@+id/tv_content_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="줄거리"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_main" />
-
-                <TextView
-                    android:id="@+id/tv_content"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@{data.content}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_content_title" />
-
-                <TextView
-                    android:id="@+id/tv_people_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_content" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_people"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_people_title"
-                    tools:listitem="@layout/item_people" />
-
-                <TextView
-                    android:id="@+id/tv_video_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="관련 영상"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rcv_people" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_video"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_video_title"
-                    tools:listitem="@layout/item_video" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
-
-        <ProgressBar
-            android:id="@+id/progressbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateTint="@color/main"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

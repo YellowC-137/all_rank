@@ -41,7 +41,8 @@ class RemoteRepositoryImpl @Inject constructor(
                     rank = book.rank.toString(),
                     img = book.coverLargeUrl,
                     owner = book.author,
-                    content = book.description
+                    content = book.description,
+                    link = book.link
                 )
 
                 result.add(temp)
@@ -75,7 +76,8 @@ class RemoteRepositoryImpl @Inject constructor(
                     title = book.doc.bookname,
                     img = book.doc.bookImageURL,
                     owner = book.doc.authors,
-                    content = book.doc.class_nm
+                    content = book.doc.class_nm,
+                    link = book.doc.bookDtlUrl
                 )
 
                 result.add(temp)
@@ -108,7 +110,8 @@ class RemoteRepositoryImpl @Inject constructor(
                                     title = movie.movieNm,
                                     img = info.image,
                                     owner = "누적 관객수: ${movie.audiAcc}",
-                                    content = "${movie.openDt} 개봉"
+                                    content = "${movie.openDt} 개봉",
+                                    link = info.link
                                 )
 
                                 result.add(temp)
@@ -181,15 +184,16 @@ class RemoteRepositoryImpl @Inject constructor(
                     return@withContext
                 }
             }
-            for (book in books.items) {
+            for (item in books.items) {
                 val temp = BookModel(
-                    title = book.title,
-                    pubDate = book.pubdate,
-                    publisher = book.publisher,
-                    description = book.description,
-                    img = book.image,
-                    author = book.author
+                    title = item.title,
+                    pubDate = item.pubdate,
+                    publisher = item.publisher,
+                    description = item.description,
+                    img = item.image,
+                    author = item.author
                 )
+                Timber.e("BOOKTEST : ${item.title}")
                 result.add(temp)
             }
         }

@@ -126,7 +126,8 @@ class MyService : Service() {
                     title = title,
                     owner = "",
                     img = "",
-                    content = ""
+                    content = "",
+                    link=""
                 )
                 result.add(temp)
             }

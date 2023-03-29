@@ -1,5 +1,7 @@
 package yellowc.app.allrank.ui.home.news
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -22,7 +24,13 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>(R.layout.fragment_news) {
     private val adapter: BaseAdapter by lazy {
         BaseAdapter(
             itemClicked = {
-                //TODO
+
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("${it.link}")
+                )
+                requireContext().startActivity(intent)
+
             }
         )
     }
@@ -34,7 +42,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>(R.layout.fragment_news) {
         viewModel.getNews(NEWS_URL, JSOUP_NEWS)
         binding.newsRcv.adapter = adapter
 
-        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setColorSchemeColors(resources.getColor(R.color.main))
         binding.refreshLayout.setOnRefreshListener {
             viewModel.getNews(NEWS_URL, JSOUP_NEWS)
             binding.refreshLayout.isRefreshing = false

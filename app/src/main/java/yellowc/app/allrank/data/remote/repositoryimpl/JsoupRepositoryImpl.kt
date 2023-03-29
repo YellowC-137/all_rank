@@ -37,7 +37,8 @@ class JsoupRepositoryImpl @Inject constructor(
                     img = item.ImgUrl,
                     rank = item.rank,
                     content = item.description,
-                    owner = item.owner
+                    owner = item.owner,
+                    link = item.link
                 )
                 result.add(temp)
             }

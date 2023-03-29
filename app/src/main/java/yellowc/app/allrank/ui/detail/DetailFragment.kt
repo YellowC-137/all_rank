@@ -1,12 +1,14 @@
 package yellowc.app.allrank.ui.detail
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -14,9 +16,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentDetailBinding
-import yellowc.app.allrank.ui.base.BaseAdapter
+import yellowc.app.allrank.domain.models.People
 import yellowc.app.allrank.ui.base.BaseFragment
-import yellowc.app.allrank.ui.book.BookFragmentDirections
 import yellowc.app.allrank.util.*
 
 @AndroidEntryPoint
@@ -26,7 +27,17 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
     private val vidAdapter: VideoAdapter by lazy {
         VideoAdapter(
             itemClicked = {
-          //TODO 유튜브 영상 재생 , video box clip
+                val firstIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:${it.videoId}"))
+                val secondIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://www.youtube.com/watch?v=${it.videoId}")
+                )
+                try {
+                    requireContext().startActivity(firstIntent)
+                } catch (e: ActivityNotFoundException) {
+                    requireContext().startActivity(secondIntent)
+                }
+
             }
         )
     }
@@ -34,29 +45,44 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.progressbar.visibility = View.VISIBLE
         binding.data = args.data
         pplAdapter = PeopleAdapter()
-        viewModel.getvideo(args.data.title)
+        viewModel.getVideo(args.data.title)
+        //&#39 포함
 
         when (args.type) {
             BOOK_DETAIL -> {
                 binding.apply {
-                    tvRate.visibility = View.GONE
-                    tvGenre.visibility = View.GONE
-                    tvPeopleTitle.text = "작가의 다른 도서"
+                    //TODO recyclerView 안보임! 수정
+                    Timber.e("BOOK: ${args.data.owner}")
+                    args.data.owner?.let { viewModel.getBook(it) }
                     rcvPeople.adapter = pplAdapter
                     rcvVideo.adapter = vidAdapter
+                    tvRate.visibility = View.GONE
+                    tvGenre.visibility = View.GONE
+                    tvDate.visibility = View.GONE
+                    tvPeopleTitle.text = "관련 도서"
                 }
             }
             GAME_DETAIL -> {
                 binding.apply {
 //TODO
+                    rcvPeople.adapter = pplAdapter
+                    rcvVideo.adapter = vidAdapter
+                    args.data.owner?.let { viewModel.getBook(it) }
+                    tvRate.visibility = View.GONE
+                    tvGenre.visibility = View.GONE
+                    tvDate.visibility = View.GONE
+                    tvPeopleTitle.text = "관련 게임"
                 }
             }
             NEWS_DETAIL -> {
                 binding.apply {
 //TODO
+                    rcvPeople.visibility = View.GONE
+                    tvPeopleTitle.visibility = View.GONE
+
+
                 }
             }
             MOVIE_DETAIL -> {
@@ -86,7 +112,25 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
                 viewModel.video.collectLatest {
                     if (it.isNotEmpty()) {
                         vidAdapter.submitList(it)
-                        binding.progressbar.visibility = View.GONE
+                    }
+                }
+
+                viewModel.books.collectLatest {
+                    if (it.isNotEmpty()) {
+                        val temp = ArrayList<People>()
+                        for (i in it) {
+                            temp.add(
+                                People(
+                                    img = i.img,
+                                    name = i.title,
+                                    age = null,
+                                    role = null
+                                )
+                            )
+                        }
+                        Timber.e("BOOK: ${temp.size}")
+                        //TODO 응답 데이터 수정
+                        pplAdapter.submitList(temp)
                     }
                 }
 

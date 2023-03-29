@@ -6,16 +6,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BaseModel(
-    val title : String,
-    val img :String?,
-    val rank : String,
-    val content :String?,
-    val owner : String?
+    val title: String,
+    val img: String?,
+    val rank: String,
+    val content: String?,
+    val owner: String?,
+    val link: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString(),
         parcel.readString()!!,
+        parcel.readString(),
         parcel.readString(),
         parcel.readString()
     )
@@ -26,6 +28,7 @@ data class BaseModel(
         parcel.writeString(rank)
         parcel.writeString(content)
         parcel.writeString(owner)
+        parcel.writeString(link)
     }
 
     override fun describeContents(): Int {
