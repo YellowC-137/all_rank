@@ -36,6 +36,7 @@ android {
         buildConfigField("String", "YOUTUBE_API_KEY", properties.getProperty("YOUTUBE_API_KEY"))
         buildConfigField("String", "STAEM_API", properties.getProperty("STAEM_API"))
         buildConfigField("String", "MUSIC_API_KEY", properties.getProperty("MUSIC_API_KEY"))
+        buildConfigField("String", "LYRIC_API_KEY", properties.getProperty("LYRIC_API_KEY"))
     }
 
     buildTypes {

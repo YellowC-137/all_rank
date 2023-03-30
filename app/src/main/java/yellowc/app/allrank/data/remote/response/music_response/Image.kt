@@ -1,5 +1,6 @@
 package yellowc.app.allrank.data.remote.response.music_response
 
-data class MusicResponse(
-    val results: Results
+data class Image(
+    val #text: String,
+    val size: String
 )

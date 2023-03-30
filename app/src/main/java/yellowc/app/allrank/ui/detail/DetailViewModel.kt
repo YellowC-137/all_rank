@@ -71,16 +71,20 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+
+//음악  음악정보 따로 가사 따로 , 가사는 없을수도 있음!
     fun getLyrics(song: String){}
-
+//가수의 다른 음악
     fun getRelateMusic(artist: String){}
-    //
 
+
+    //감독의 다른 영화
     fun getRelateMovie(director: String){}
 
-    //
+    //게임 정보, 게임 id로 가져와야함
     fun getGame(game: String){}
 
+    //DLC나 관련 게임
     fun getDLCs(game: String){}//?
 
 

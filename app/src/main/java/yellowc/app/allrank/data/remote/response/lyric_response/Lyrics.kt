@@ -1,8 +1,5 @@
-package yellowc.app.allrank.data.remote.response.music_response
+package yellowc.app.allrank.data.remote.response.lyric_response
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class Lyrics(
     val explicit: Int,
     val lyrics_body: String,

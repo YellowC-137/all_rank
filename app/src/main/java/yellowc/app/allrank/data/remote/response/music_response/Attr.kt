@@ -1,5 +1,3 @@
 package yellowc.app.allrank.data.remote.response.music_response
 
-data class MusicResponse(
-    val results: Results
-)
+class Attr
