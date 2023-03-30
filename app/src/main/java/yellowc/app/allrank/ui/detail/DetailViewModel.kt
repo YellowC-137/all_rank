@@ -21,11 +21,11 @@ class DetailViewModel @Inject constructor(
     private val _video = MutableStateFlow<List<Videos>>(emptyList())
     val video = _video
 
-    private val _actors = MutableStateFlow<List<MovieModel>>(emptyList())
-    val actors = _actors
-    //영화의 경우 출연 배우
+    private val _movie = MutableStateFlow<List<MovieModel>>(emptyList())
+    val movie = _movie
+    //영화의 경우 관련 영화
 
-    private val _books = MutableStateFlow<List<BookModel>>(emptyList())
+    private val _books = MutableStateFlow<List<RelateModel>>(emptyList())
     val books = _books
     //도서의 경우 관련 도서
 
@@ -37,6 +37,9 @@ class DetailViewModel @Inject constructor(
     val music = _music
     //음악의 경우 아티스트의 다른 음악
 
+    private val _news = MutableStateFlow<List<BaseModel>>(emptyList())
+    val news = _news
+
     fun getVideo(query: String) {
         viewModelScope.launch {
             _video.emit(getVideoUseCase.invoke(query))
@@ -45,8 +48,41 @@ class DetailViewModel @Inject constructor(
 
     fun getBook(query: String) {
         viewModelScope.launch {
-            _books.emit(getBookSearchUseCase.invoke(query))
+            val temp = getBookSearchUseCase.invoke(query)
+            val ppl = arrayListOf<RelateModel>()
+            for (i in temp) {
+                ppl.add(
+                    RelateModel(
+                        img = i.img!!,
+                        name = i.title,
+                        age = "",
+                        role = ""
+                    )
+                )
+                Timber.e(i.title)
+            }
+            _books.emit(ppl)
         }
     }
+
+    fun getNews(query: String) {
+        viewModelScope.launch {
+            _news.emit(getNewsSearchUseCase.invoke(query))
+        }
+    }
+
+    fun getLyrics(song: String){}
+
+    fun getRelateMusic(artist: String){}
+    //
+
+    fun getRelateMovie(director: String){}
+
+    //
+    fun getGame(game: String){}
+
+    fun getDLCs(game: String){}//?
+
+
 
 }

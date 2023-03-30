@@ -3,42 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
-            name="people"
-            type="yellowc.app.allrank.domain.models.People" />
+            name="relateModel"
+            type="yellowc.app.allrank.domain.models.RelateModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="100dp"
-        android:layout_height="150dp"
+        android:layout_width="125dp"
+        android:layout_height="175dp"
         android:layout_margin="8dp">
 
         <ImageView
-            android:id="@+id/iv_people_item"
+            android:id="@+id/iv_people"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:src="@color/black"
-            app:image="@{people.img}"
+            app:image="@{relateModel.img}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_people_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@{people.name}"
+            android:layout_margin="4dp"
+            android:text="@{relateModel.name}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_people_item" />
+            app:layout_constraintTop_toBottomOf="@id/iv_people" />
 
         <TextView
             android:id="@+id/tv_people_role"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@{people.role}"
+            android:layout_margin="4dp"
+            android:text="@{relateModel.role}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_people_name" />
 

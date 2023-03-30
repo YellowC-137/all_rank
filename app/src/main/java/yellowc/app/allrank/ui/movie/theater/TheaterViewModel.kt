@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import yellowc.app.allrank.domain.models.BaseModel
+import yellowc.app.allrank.domain.models.MovieModel
 import yellowc.app.allrank.domain.usecases.GetBoxOfficeUseCase
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ import javax.inject.Inject
 class TheaterViewModel @Inject constructor(
     private val getBoxOfficeUseCase: GetBoxOfficeUseCase
 ) : ViewModel() {
-    private val _boxoffice = MutableStateFlow<List<BaseModel>>(emptyList())
+    private val _boxoffice = MutableStateFlow<List<MovieModel>>(emptyList())
     val boxoffice = _boxoffice
 
 

@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import yellowc.app.allrank.domain.models.BaseModel
+import yellowc.app.allrank.domain.models.BookModel
 import yellowc.app.allrank.domain.usecases.GetBookStoreUseCase
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ import javax.inject.Inject
 class BookStoreViewModel @Inject constructor(
     private val getBookStoreUseCase: GetBookStoreUseCase
 ) : ViewModel() {
-    private val _bestsellers = MutableStateFlow<List<BaseModel>>(emptyList())
+    private val _bestsellers = MutableStateFlow<List<BookModel>>(emptyList())
     val bestsellers = _bestsellers
 
 

@@ -5,19 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import timber.log.Timber
-import yellowc.app.allrank.databinding.ItemPeopleBinding
-import yellowc.app.allrank.domain.models.People
+import yellowc.app.allrank.databinding.ItemRelateBinding
+import yellowc.app.allrank.domain.models.RelateModel
 
-class PeopleAdapter : ListAdapter<People, PeopleAdapter.PeopleViewHolder>(diffUtil) {
+class RelatedAdapter : ListAdapter<RelateModel, RelatedAdapter.PeopleViewHolder>(diffUtil) {
 
-    inner class PeopleViewHolder(private val binding: ItemPeopleBinding) :
+    inner class PeopleViewHolder(private val binding: ItemRelateBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: People) {
+        fun bind(item: RelateModel) {
             binding.apply {
-                Timber.e(item.name)
-                people = item
-
+                relateModel = item
             }
         }
 
@@ -25,7 +22,7 @@ class PeopleAdapter : ListAdapter<People, PeopleAdapter.PeopleViewHolder>(diffUt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleViewHolder {
         return PeopleViewHolder(
-            ItemPeopleBinding.inflate(
+            ItemRelateBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent, false
             )
@@ -40,15 +37,15 @@ class PeopleAdapter : ListAdapter<People, PeopleAdapter.PeopleViewHolder>(diffUt
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<People>() {
+        private val diffUtil = object : DiffUtil.ItemCallback<RelateModel>() {
             override fun areItemsTheSame(
-                oldItem: People,
-                newItem: People
+                oldItem: RelateModel,
+                newItem: RelateModel
             ) = oldItem == newItem
 
             override fun areContentsTheSame(
-                oldItem: People,
-                newItem: People
+                oldItem: RelateModel,
+                newItem: RelateModel
             ) = oldItem == newItem
         }
     }

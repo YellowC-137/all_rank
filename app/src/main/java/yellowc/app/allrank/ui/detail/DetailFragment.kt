@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentDetailBinding
-import yellowc.app.allrank.domain.models.People
+import yellowc.app.allrank.domain.models.BookModel
 import yellowc.app.allrank.ui.base.BaseFragment
 import yellowc.app.allrank.util.*
 
@@ -41,72 +41,92 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
             }
         )
     }
-    private lateinit var pplAdapter: PeopleAdapter
+    private lateinit var pplAdapter: RelatedAdapter
+    private val newsAdapter: NewsAdapter by lazy {
+        NewsAdapter(
+            itemClicked = {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("${it.link}")
+                )
+                requireContext().startActivity(intent)
+            }
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.data = args.data
-        pplAdapter = PeopleAdapter()
+        pplAdapter = RelatedAdapter()
         viewModel.getVideo(args.data.title)
+
+
         //&#39 포함
+        val title = arguments?.getString("title")
+        val duration = arguments?.getInt("duration")
+        //제목,제작자,날짜,장르,가격
+
 
         when (args.type) {
             BOOK_DETAIL -> {
+                TODO("")
+                val book = requireArguments().getSerializable("book") as BookModel
+                Timber.e("TEST : ${book.title}")
+
+                viewModel.getBook(args.data.owner!!)
                 binding.apply {
-                    //TODO recyclerView 안보임! 수정
-                    Timber.e("BOOK: ${args.data.owner}")
-                    args.data.owner?.let { viewModel.getBook(it) }
-                    rcvPeople.adapter = pplAdapter
+                    rcvRelated.adapter = pplAdapter
                     rcvVideo.adapter = vidAdapter
-                    tvRate.visibility = View.GONE
-                    tvGenre.visibility = View.GONE
-                    tvDate.visibility = View.GONE
-                    tvPeopleTitle.text = "관련 도서"
+                    tvRelatedTitle.text = "관련 도서"
                 }
             }
             GAME_DETAIL -> {
                 binding.apply {
-//TODO
-                    rcvPeople.adapter = pplAdapter
+                    rcvRelated.adapter = pplAdapter
                     rcvVideo.adapter = vidAdapter
-                    args.data.owner?.let { viewModel.getBook(it) }
-                    tvRate.visibility = View.GONE
-                    tvGenre.visibility = View.GONE
-                    tvDate.visibility = View.GONE
-                    tvPeopleTitle.text = "관련 게임"
+                    tvRelatedTitle.text = "관련 게임"
                 }
             }
             NEWS_DETAIL -> {
+                //TREND
+                viewModel.getNews(args.data.title)
                 binding.apply {
-//TODO
-                    rcvPeople.visibility = View.GONE
-                    tvPeopleTitle.visibility = View.GONE
-
-
+                    rcvRelated.visibility = View.GONE
+                    tvAuthor.visibility = View.GONE
+                    tvContentTitle.visibility = View.GONE
+                    tvContent.visibility = View.GONE
+                    rcvTrendNews.visibility = View.VISIBLE
+                    tvRelatedTitle.text = "관련 기사"
                 }
             }
             MOVIE_DETAIL -> {
                 binding.apply {
-                    tvRate.visibility = View.GONE
-                    tvPeopleTitle.text = "출연 배우"
+                    tvRelatedTitle.text = "감독의 다른 영화"
                 }
             }
             MUSIC_DETAIL -> {
                 binding.apply {
-//TODO
+                    tvRelatedTitle.text = "가수의 다른 음악"
                 }
             }
-
         }
-
-
-
 
         collectFlow()
 
     }
 
     private fun collectFlow() {
+        //관련 정보
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.books.collectLatest {
+                    if (it.isNotEmpty()) {
+                        pplAdapter.submitList(it)
+                    }
+                }
+            }
+        }
+        //유튜브 영상
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.video.collectLatest {
@@ -114,29 +134,59 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
                         vidAdapter.submitList(it)
                     }
                 }
-
-                viewModel.books.collectLatest {
-                    if (it.isNotEmpty()) {
-                        val temp = ArrayList<People>()
-                        for (i in it) {
-                            temp.add(
-                                People(
-                                    img = i.img,
-                                    name = i.title,
-                                    age = null,
-                                    role = null
-                                )
-                            )
-                        }
-                        Timber.e("BOOK: ${temp.size}")
-                        //TODO 응답 데이터 수정
-                        pplAdapter.submitList(temp)
-                    }
-                }
-
-                //TODO viewModel.people.collectLatest
-
             }
         }
+        //관련 뉴스
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.news.collectLatest {
+                    if (it.isNotEmpty()) {
+
+                    }
+                }
+            }
+        }
+        //관련 도서
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.books.collectLatest {
+                    if (it.isNotEmpty()) {
+
+                    }
+                }
+            }
+        }
+        //관련 게임
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.games.collectLatest {
+                    if (it.isNotEmpty()) {
+
+                    }
+                }
+            }
+        }
+        //가수의 다른 음악
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.music.collectLatest {
+                    if (it.isNotEmpty()) {
+
+                    }
+                }
+            }
+        }
+        //감독의 다른 영화
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.movie.collectLatest {
+                    if (it.isNotEmpty()) {
+
+                    }
+                }
+            }
+        }
+
+
     }
 }

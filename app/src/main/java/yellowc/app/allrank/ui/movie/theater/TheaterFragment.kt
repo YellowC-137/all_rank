@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import yellowc.app.allrank.AllRankApplication
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentTheaterBinding
+import yellowc.app.allrank.domain.models.BaseModel
 import yellowc.app.allrank.ui.base.BaseAdapter
 import yellowc.app.allrank.ui.base.BaseFragment
 import yellowc.app.allrank.ui.movie.MovieFragmentDirections
@@ -52,7 +53,19 @@ class TheaterFragment : BaseFragment<FragmentTheaterBinding>(R.layout.fragment_t
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.boxoffice.collectLatest {
                     if (it.isNotEmpty()) {
-                        adapter.submitList(it)
+                        val tempList = arrayListOf<BaseModel>()
+                        for (i in it){
+                            val temp = BaseModel(
+                                title = i.title,
+                                img = i.img,
+                                rank = i.rank,
+                                content = i.director,
+                                owner = i.pubDate,
+                                link = i.link
+                            )
+                            tempList.add(temp)
+                        }
+                        adapter.submitList(tempList)
                         binding.progressbar.visibility = View.GONE
                     }
                 }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import yellowc.app.allrank.AllRankApplication
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentLibraryBinding
+import yellowc.app.allrank.domain.models.BaseModel
 import yellowc.app.allrank.ui.base.BaseAdapter
 import yellowc.app.allrank.ui.base.BaseFragment
 import yellowc.app.allrank.ui.book.BookFragmentDirections
@@ -59,7 +60,19 @@ class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_l
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.library.collectLatest {
                     if (it.isNotEmpty()) {
-                        adapter.submitList(it)
+                        val tempList = arrayListOf<BaseModel>()
+                        for (i in it){
+                            val temp = BaseModel(
+                                title = i.title,
+                                img = i.img,
+                                rank = i.rank,
+                                content = i.genre,
+                                owner = i.author,
+                                link = i.link
+                            )
+                            tempList.add(temp)
+                        }
+                        adapter.submitList(tempList)
                         binding.progressbar.visibility = View.GONE
                     }
                 }

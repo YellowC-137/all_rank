@@ -6,10 +6,11 @@ import yellowc.app.allrank.data.remote.response.news_search_response.NewsSearchR
 import yellowc.app.allrank.domain.models.*
 
 interface RetrofitRepositories {
-    suspend fun getBookStoreResult(): List<BaseModel>
-    suspend fun getLibraryResult(start: String, end: String): List<BaseModel>
-    suspend fun getBoxOfficeResult(target: String): List<BaseModel>
+    suspend fun getBookStoreResult(): List<BookModel>
+    suspend fun getLibraryResult(start: String, end: String): List<BookModel>
+    suspend fun getBoxOfficeResult(target: String): List<MovieModel>
     suspend fun getVideoResult(query: String): List<Videos>
-    suspend fun getNewsSearchResult(news: String): List<NewsModel>
-    suspend fun getBookSearchResult(book: String): List<BookModel>
+    suspend fun getNewsSearchResult(news: String): List<BaseModel>
+    suspend fun getBookSearchResult(book: String): List<BaseModel>
+    //게임,음악
 }

@@ -9,6 +9,7 @@ import yellowc.app.allrank.data.remote.response.book_search_response.BookSearchR
 import yellowc.app.allrank.data.remote.response.bookstore_response.Item
 import yellowc.app.allrank.data.remote.response.boxoffice_response.WeeklyBoxOffice
 import yellowc.app.allrank.data.remote.response.library_response.Doc
+import yellowc.app.allrank.data.remote.response.news_search_response.NewsSearchResponse
 import yellowc.app.allrank.di.DispatcherModule
 import yellowc.app.allrank.domain.models.*
 import yellowc.app.allrank.domain.repositories.RetrofitRepositories
@@ -18,8 +19,8 @@ class RemoteRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     @DispatcherModule.DispatcherIO private val dispatcherIO: CoroutineDispatcher
 ) : RetrofitRepositories {
-    override suspend fun getBookStoreResult(): List<BaseModel> {
-        val result = ArrayList<BaseModel>()
+    override suspend fun getBookStoreResult(): List<BookModel> {
+        val result = ArrayList<BookModel>()
         withContext(dispatcherIO) {
             val responseList = async {
                 remoteDataSource.getBookStore()
@@ -35,26 +36,27 @@ class RemoteRepositoryImpl @Inject constructor(
                 }
             }
             for (book in bestsellers) {
-
-                val temp = BaseModel(
+                val temp = BookModel(
                     title = book.title,
                     rank = book.rank.toString(),
                     img = book.coverLargeUrl,
-                    owner = book.author,
-                    content = book.description,
-                    link = book.link
+                    author = book.author,
+                    description = book.description,
+                    link = book.link,
+                    publisher = book.publisher,
+                    pubDate = book.pubDate,
+                    price = book.priceStandard.toString(),
+                    genre = book.categoryName
                 )
-
                 result.add(temp)
             }
-
 
         }
         return result
     }
 
-    override suspend fun getLibraryResult(start: String, end: String): List<BaseModel> {
-        val result = ArrayList<BaseModel>()
+    override suspend fun getLibraryResult(start: String, end: String): List<BookModel> {
+        val result = ArrayList<BookModel>()
         withContext(dispatcherIO) {
             val responseList = async {
                 remoteDataSource.getLibrary(start, end)
@@ -71,13 +73,17 @@ class RemoteRepositoryImpl @Inject constructor(
             }
             for (book in library) {
 
-                val temp = BaseModel(
+                val temp = BookModel(
                     rank = book.doc.ranking,
                     title = book.doc.bookname,
                     img = book.doc.bookImageURL,
-                    owner = book.doc.authors,
-                    content = book.doc.class_nm,
-                    link = book.doc.bookDtlUrl
+                    author = book.doc.authors,
+                    genre = book.doc.class_nm,
+                    link = book.doc.bookDtlUrl,
+                    pubDate = book.doc.publication_year,
+                    publisher = book.doc.publisher,
+                    price = "",
+                    description = ""
                 )
 
                 result.add(temp)
@@ -86,8 +92,8 @@ class RemoteRepositoryImpl @Inject constructor(
         return result
     }
 
-    override suspend fun getBoxOfficeResult(target: String): List<BaseModel> {
-        val result = ArrayList<BaseModel>()
+    override suspend fun getBoxOfficeResult(target: String): List<MovieModel> {
+        val result = ArrayList<MovieModel>()
         withContext(dispatcherIO) {
             val responseList = async {
                 remoteDataSource.getBoxOffice(target)
@@ -101,21 +107,19 @@ class RemoteRepositoryImpl @Inject constructor(
                         val movieInfo = async {
                             remoteDataSource.getMovieSearch(movie = movie.movieNm)
                         }
-                        Timber.e(movie.movieNm)
                         when (val responseMovieInfo = movieInfo.await()) {
                             is MyResult.Success -> {
                                 val info = responseMovieInfo.data.items[0]
-                                val temp = BaseModel(
+                                val temp = MovieModel(
                                     rank = movie.rank,
+                                    link = info.link,
                                     title = movie.movieNm,
-                                    img = info.image,
-                                    owner = "누적 관객수: ${movie.audiAcc}",
-                                    content = "${movie.openDt} 개봉",
-                                    link = info.link
+                                    director = info.director,
+                                    pubDate = movie.openDt+" or "+info.pubDate,
+                                    actors = info.actor,
+                                    img = info.image
                                 )
-
                                 result.add(temp)
-
                             }
                             is MyResult.Error -> {
                                 return@withContext
@@ -163,13 +167,40 @@ class RemoteRepositoryImpl @Inject constructor(
         return result
     }
 
-    override suspend fun getNewsSearchResult(news: String): List<NewsModel> {
-        //TODO("Not yet implemented")
-        return emptyList()
+    override suspend fun getNewsSearchResult(news: String): List<BaseModel> {
+        val result = ArrayList<BaseModel>()
+        withContext(dispatcherIO) {
+            val responseList = async {
+                remoteDataSource.getNewsSearch(news)
+            }
+            val newsData: NewsSearchResponse
+
+            when (val response = responseList.await()) {
+                is MyResult.Success -> {
+                    newsData = response.data
+                }
+                is MyResult.Error -> {
+                    return@withContext
+                }
+            }
+            for (item in newsData.items) {
+                val temp = BaseModel(
+                    title = item.title,
+                    rank = "",
+                    img = "",
+                    content = item.description,
+                    owner = item.pubDate,
+                    link = item.originallink
+                )
+                Timber.e("BOOKTEST : ${item.title}")
+                result.add(temp)
+            }
+        }
+        return result
     }
 
-    override suspend fun getBookSearchResult(book: String): List<BookModel> {
-        val result = ArrayList<BookModel>()
+    override suspend fun getBookSearchResult(book: String): List<BaseModel> {
+        val result = ArrayList<BaseModel>()
         withContext(dispatcherIO) {
             val responseList = async {
                 remoteDataSource.getBookSearch(book)
@@ -185,13 +216,13 @@ class RemoteRepositoryImpl @Inject constructor(
                 }
             }
             for (item in books.items) {
-                val temp = BookModel(
+                val temp = BaseModel(
                     title = item.title,
-                    pubDate = item.pubdate,
-                    publisher = item.publisher,
-                    description = item.description,
+                    rank = "",
                     img = item.image,
-                    author = item.author
+                    content = item.publisher,
+                    owner = item.author,
+                    link = item.link
                 )
                 Timber.e("BOOKTEST : ${item.title}")
                 result.add(temp)
