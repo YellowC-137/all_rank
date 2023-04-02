@@ -13,7 +13,7 @@ const val MOVIE_BOXOFFICE_API_URL = "http://kobis.or.kr/kobisopenapi/webservice/
 const val SEARCH_NAVER_API_URL = "https://openapi.naver.com/v1/search/"
 const val YOUTUBE_API_URL ="https://www.googleapis.com/youtube/v3/"
 const val MUSIC_API_URL = "https://api.musixmatch.com/ws/1.1/"
-const val STEAM_API_URL = "https://api.steampowered.com/"
+const val GAME_SEARCH_API_URL = "https://www.giantbomb.com/api/search/"
 
 //Types
 const val JSOUP_KOREAN_MUSIC = "KOREAN"
