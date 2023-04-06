@@ -1,5 +1,8 @@
 package yellowc.app.allrank.data.remote.response.game_search_response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Image(
     val icon_url: String,
     val image_tags: String,

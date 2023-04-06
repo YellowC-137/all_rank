@@ -19,10 +19,8 @@ class NewsAdapter(private val itemClicked: (BaseModel) -> Unit) :
                 newsContainer.setOnClickListener {
                     itemClicked(item)
                 }
-
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

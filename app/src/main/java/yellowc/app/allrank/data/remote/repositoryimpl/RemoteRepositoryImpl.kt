@@ -199,8 +199,8 @@ class RemoteRepositoryImpl @Inject constructor(
         return result
     }
 
-    override suspend fun getBookSearchResult(book: String): List<BaseModel> {
-        val result = ArrayList<BaseModel>()
+    override suspend fun getBookSearchResult(book: String): List<BookModel> {
+        val result = ArrayList<BookModel>()
         withContext(dispatcherIO) {
             val responseList = async {
                 remoteDataSource.getBookSearch(book)
@@ -216,13 +216,17 @@ class RemoteRepositoryImpl @Inject constructor(
                 }
             }
             for (item in books.items) {
-                val temp = BaseModel(
+                val temp = BookModel(
                     title = item.title,
                     rank = "",
                     img = item.image,
-                    content = item.publisher,
-                    owner = item.author,
-                    link = item.link
+                    link = item.link,
+                    pubDate = item.pubdate,
+                    author = item.author,
+                    publisher = item.publisher,
+                    price = item.discount,
+                    genre = item.isbn,
+                    description = item.description
                 )
                 Timber.e("BOOKTEST : ${item.title}")
                 result.add(temp)

@@ -77,7 +77,6 @@ class DetailViewModel @Inject constructor(
 //가수의 다른 음악
     fun getRelateMusic(artist: String){}
 
-
     //감독의 다른 영화
     fun getRelateMovie(director: String){}
 

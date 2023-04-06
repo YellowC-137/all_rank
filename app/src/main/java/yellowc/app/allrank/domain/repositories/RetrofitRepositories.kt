@@ -11,6 +11,6 @@ interface RetrofitRepositories {
     suspend fun getBoxOfficeResult(target: String): List<MovieModel>
     suspend fun getVideoResult(query: String): List<Videos>
     suspend fun getNewsSearchResult(news: String): List<BaseModel>
-    suspend fun getBookSearchResult(book: String): List<BaseModel>
+    suspend fun getBookSearchResult(book: String): List<BookModel>
     //게임,음악
 }

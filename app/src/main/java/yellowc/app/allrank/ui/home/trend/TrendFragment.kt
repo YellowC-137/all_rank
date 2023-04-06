@@ -22,6 +22,7 @@ import yellowc.app.allrank.ui.book.BookFragmentDirections
 import yellowc.app.allrank.ui.home.HomeFragmentDirections
 import yellowc.app.allrank.util.BOOK_DETAIL
 import yellowc.app.allrank.util.JSOUP_TREND
+import yellowc.app.allrank.util.NEWS_DETAIL
 import yellowc.app.allrank.util.TREND_URL
 
 @AndroidEntryPoint
@@ -31,7 +32,7 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
         BaseAdapter(
             itemClicked = {
                 val action = HomeFragmentDirections.actionNavigationHomeToDetailFragment(
-                    BOOK_DETAIL, it
+                    NEWS_DETAIL, it
                 )
                 requireView().findNavController().navigate(action)
             }
