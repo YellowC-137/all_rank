@@ -81,17 +81,20 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
                 collectGame()
             }
             NEWS_DETAIL -> {
-                // <b> ,</b>,&apos,&quot
+                // 유튜브 영상 안나옴
                 viewModel.getNews(args.data.title)
                 binding.apply {
-                    border.visibility = View.GONE
                     rcvTrendNews.adapter = newsAdapter
-                    rcvRelated.visibility = View.GONE
-                    tvAuthor.visibility = View.GONE
+
+                    ivMain.visibility = View.GONE
+                    border.visibility = View.GONE
                     tvContentTitle.visibility = View.GONE
                     tvContent.visibility = View.GONE
-                    rcvTrendNews.visibility = View.VISIBLE
                     tvRelatedTitle.text = "관련 기사"
+                    rcvRelated.visibility = View.GONE
+                    tvAuthor.visibility = View.GONE
+                    tvNewsTitle.visibility = View.VISIBLE
+                    rcvTrendNews.visibility = View.VISIBLE
                 }
                 collectNews()
             }

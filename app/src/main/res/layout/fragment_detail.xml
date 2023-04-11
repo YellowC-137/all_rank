@@ -62,7 +62,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@id/iv_main"
                 app:layout_constraintTop_toBottomOf="@id/tv_author"
                 tools:text="제작날짜" />
@@ -72,7 +71,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@id/iv_main"
                 app:layout_constraintTop_toBottomOf="@id/tv_date"
                 tools:text="장르" />
@@ -82,7 +80,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@id/iv_main"
                 app:layout_constraintTop_toBottomOf="@id/tv_publisher"
                 tools:text="가격" />
@@ -190,18 +187,27 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_video_title"
                 tools:listitem="@layout/item_video" />
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_news_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="뉴스"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rcv_video"/>
+
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/rcv_trend_news"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:orientation="vertical"
-                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@id/border_two"
+                app:layout_constraintTop_toBottomOf="@id/tv_news_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_related_title"
                 tools:listitem="@layout/item_news" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
