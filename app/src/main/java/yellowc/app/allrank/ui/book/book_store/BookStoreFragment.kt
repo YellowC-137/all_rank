@@ -31,12 +31,6 @@ class BookStoreFragment : BaseFragment<FragmentBookStoreBinding>(R.layout.fragme
                 val action = BookFragmentDirections.actionNavigationBookToDetailFragment(
                     BOOK_DETAIL, it
                 )
-                TODO("")
-                Timber.e("TEST : ${it.rank}")
-                val bookModel = bookModels[it.rank.toInt()-1]
-                Timber.e("TEST : ${bookModel.title}")
-                action.arguments.putSerializable("book", bookModel)
-
                 requireView().findNavController().navigate(action)
             }
         )

@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import yellowc.app.allrank.R
 import yellowc.app.allrank.databinding.FragmentDetailBinding
 import yellowc.app.allrank.ui.base.BaseFragment
@@ -39,7 +40,7 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
             }
         )
     }
-    private lateinit var pplAdapter: RelatedAdapter
+    private lateinit var relatedAdapter: RelatedAdapter
     private val newsAdapter: NewsAdapter by lazy {
         NewsAdapter(
             itemClicked = {
@@ -55,36 +56,35 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.data = args.data
-        pplAdapter = RelatedAdapter()
+        relatedAdapter = RelatedAdapter()
         viewModel.getVideo(args.data.title)
-
-        //&#39 포함
-        val title = arguments?.getString("title")
-        val duration = arguments?.getInt("duration")
-        //제목,제작자,날짜,장르,가격
-
+        Timber.e("type : ${args.type}, title: ${args.data.title} , owner: ${args.data.owner}")
+        collectVideo()
 
         when (args.type) {
             BOOK_DETAIL -> {
                 viewModel.getBook(args.data.owner!!)
                 binding.apply {
-                    rcvRelated.adapter = pplAdapter
+                    rcvRelated.adapter = relatedAdapter
                     rcvVideo.adapter = vidAdapter
                     tvRelatedTitle.text = "관련 도서"
+                    tvContentTitle.text = "줄거리"
                 }
+                collectBook()
             }
             GAME_DETAIL -> {
                 binding.apply {
-                    rcvRelated.adapter = pplAdapter
+                    rcvRelated.adapter = relatedAdapter
                     rcvVideo.adapter = vidAdapter
                     tvRelatedTitle.text = "관련 게임"
                 }
+                collectGame()
             }
             NEWS_DETAIL -> {
                 // <b> ,</b>,&apos,&quot
                 viewModel.getNews(args.data.title)
                 binding.apply {
-                    border.visibility= View.GONE
+                    border.visibility = View.GONE
                     rcvTrendNews.adapter = newsAdapter
                     rcvRelated.visibility = View.GONE
                     tvAuthor.visibility = View.GONE
@@ -93,24 +93,24 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
                     rcvTrendNews.visibility = View.VISIBLE
                     tvRelatedTitle.text = "관련 기사"
                 }
+                collectNews()
             }
             MOVIE_DETAIL -> {
                 binding.apply {
                     tvRelatedTitle.text = "감독의 다른 영화"
                 }
+                collectMovie()
             }
             MUSIC_DETAIL -> {
                 binding.apply {
                     tvRelatedTitle.text = "가수의 다른 음악"
                 }
+                collectMusic()
             }
         }
-
-        collectFlow()
-
     }
 
-    private fun collectFlow() {
+    private fun collectVideo() {
         //유튜브 영상
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -121,36 +121,24 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
                 }
             }
         }
-        //관련 뉴스
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.news.collectLatest {
-                    if (it.isNotEmpty()) {
-                        newsAdapter.submitList(it)
-                    }
-                }
-            }
-        }
+
+    }
+
+    private fun collectBook() {
         //관련 도서
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.books.collectLatest {
                     if (it.isNotEmpty()) {
-
+                        relatedAdapter.submitList(it)
                     }
                 }
             }
         }
-        //관련 게임
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.games.collectLatest {
-                    if (it.isNotEmpty()) {
 
-                    }
-                }
-            }
-        }
+    }
+
+    private fun collectMusic() {
         //가수의 다른 음악
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -161,6 +149,35 @@ class DetailFragment() : BaseFragment<FragmentDetailBinding>(R.layout.fragment_d
                 }
             }
         }
+    }
+
+    private fun collectNews() {
+        //관련 뉴스
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.news.collectLatest {
+                    if (it.isNotEmpty()) {
+                        newsAdapter.submitList(it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectGame() {
+        //관련 게임
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.games.collectLatest {
+                    if (it.isNotEmpty()) {
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectMovie() {
         //감독의 다른 영화
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

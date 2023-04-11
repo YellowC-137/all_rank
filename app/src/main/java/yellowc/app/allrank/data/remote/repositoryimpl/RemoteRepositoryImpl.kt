@@ -192,7 +192,6 @@ class RemoteRepositoryImpl @Inject constructor(
                     owner = item.pubDate,
                     link = item.originallink
                 )
-                Timber.e("BOOKTEST : ${item.title}")
                 result.add(temp)
             }
         }
@@ -228,7 +227,6 @@ class RemoteRepositoryImpl @Inject constructor(
                     genre = item.isbn,
                     description = item.description
                 )
-                Timber.e("BOOKTEST : ${item.title}")
                 result.add(temp)
             }
         }

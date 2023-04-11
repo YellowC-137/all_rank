@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import timber.log.Timber
 import yellowc.app.allrank.databinding.ItemVideoBinding
 import yellowc.app.allrank.domain.models.Videos
 
@@ -16,7 +17,9 @@ class VideoAdapter(private val itemClicked: (Videos) -> Unit) :
         fun bind(item: Videos, itemClicked: (Videos) -> Unit) {
             binding.apply {
                 video = item
-                tvVideoTitle.text=item.title.replace("&quot;", "").replace(";", "")
+                val title = item.title.replace("&quot;", "").replace(";", "").replace("&#39", "")
+                Timber.e("VideoAdapter : $title")
+                tvVideoTitle.text = title
                 videoContainer.setOnClickListener {
                     itemClicked(item)
                 }

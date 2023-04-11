@@ -17,7 +17,6 @@ import yellowc.app.allrank.domain.models.BaseModel
 import yellowc.app.allrank.ui.base.BaseAdapter
 import yellowc.app.allrank.ui.base.BaseFragment
 import yellowc.app.allrank.ui.book.BookFragmentDirections
-import yellowc.app.allrank.ui.detail.DetailFragment
 import yellowc.app.allrank.util.BOOK_DETAIL
 
 @AndroidEntryPoint
@@ -30,12 +29,9 @@ class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_l
                     BOOK_DETAIL, it
                 )
                 requireView().findNavController().navigate(action)
-
             }
         )
     }
-
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +42,7 @@ class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_l
         viewModel.getlibrary(start, end)
         binding.libraryRcv.adapter = adapter
 
-        binding.refreshLayout.setColorSchemeColors( resources.getColor(R.color.main) )
+        binding.refreshLayout.setColorSchemeColors(resources.getColor(R.color.main))
         binding.refreshLayout.setOnRefreshListener {
             viewModel.getlibrary(start, end)
             binding.refreshLayout.isRefreshing = false
@@ -61,7 +57,7 @@ class LibraryFragment : BaseFragment<FragmentLibraryBinding>(R.layout.fragment_l
                 viewModel.library.collectLatest {
                     if (it.isNotEmpty()) {
                         val tempList = arrayListOf<BaseModel>()
-                        for (i in it){
+                        for (i in it) {
                             val temp = BaseModel(
                                 title = i.title,
                                 img = i.img,
