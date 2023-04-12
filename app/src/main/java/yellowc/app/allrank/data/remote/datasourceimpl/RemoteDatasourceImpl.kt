@@ -59,23 +59,6 @@ class RemoteDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMovieSearch(movie: String): MyResult<MovieSearchResponse> {
-        val response = searchService.getMovie(
-            key = movie,
-            id = BuildConfig.NAVER_API_KEY,
-            secret = BuildConfig.NAVER_SECRET
-        )
-        return try {
-            if (response.isSuccessful) {
-                MyResult.Success(response.body()!!)
-            } else {
-                MyResult.Error(IllegalArgumentException("ERROR"))
-            }
-        } catch (e: Exception) {
-            MyResult.Error(e)
-        }
-    }
-
     override suspend fun getVideo(query: String): MyResult<YoutubeResponse> {
         val response = youTubeService.getVideo(query = query)
         return try {

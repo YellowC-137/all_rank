@@ -11,13 +11,6 @@ import yellowc.app.allrank.data.remote.response.news_search_response.NewsSearchR
 import yellowc.app.allrank.util.SEARCH_NAVER_API_URL
 
 interface SearchService {
-    @GET("${SEARCH_NAVER_API_URL}movie.json")
-    suspend fun getMovie(
-        @Header("X-Naver-Client-Id") id: String = BuildConfig.NAVER_API_KEY,
-        @Header("X-Naver-Client-Secret") secret: String = BuildConfig.NAVER_SECRET,
-        @Query("query") key: String
-    ): Response<MovieSearchResponse>
-
     @GET("${SEARCH_NAVER_API_URL}book.json")
     suspend fun getBook(
         @Header("X-Naver-Client-Id") id: String = BuildConfig.NAVER_API_KEY,

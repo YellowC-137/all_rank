@@ -1,9 +1,9 @@
 package yellowc.app.allrank.domain.repositories
 
-import yellowc.app.allrank.data.remote.response.book_search_response.BookSearchResponse
-import yellowc.app.allrank.data.remote.response.movie_search_response.MovieSearchResponse
-import yellowc.app.allrank.data.remote.response.news_search_response.NewsSearchResponse
-import yellowc.app.allrank.domain.models.*
+import yellowc.app.allrank.domain.models.BaseModel
+import yellowc.app.allrank.domain.models.BookModel
+import yellowc.app.allrank.domain.models.MovieModel
+import yellowc.app.allrank.domain.models.Videos
 
 interface RetrofitRepositories {
     suspend fun getBookStoreResult(): List<BookModel>

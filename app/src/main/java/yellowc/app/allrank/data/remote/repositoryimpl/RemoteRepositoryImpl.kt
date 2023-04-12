@@ -104,27 +104,16 @@ class RemoteRepositoryImpl @Inject constructor(
                 is MyResult.Success -> {
                     boxOffice = response.data.boxOfficeResult.weeklyBoxOfficeList
                     for (movie in boxOffice) {
-                        val movieInfo = async {
-                            remoteDataSource.getMovieSearch(movie = movie.movieNm)
-                        }
-                        when (val responseMovieInfo = movieInfo.await()) {
-                            is MyResult.Success -> {
-                                val info = responseMovieInfo.data.items[0]
                                 val temp = MovieModel(
                                     rank = movie.rank,
-                                    link = info.link,
+                                    link = "",
                                     title = movie.movieNm,
-                                    director = info.director,
-                                    pubDate = movie.openDt+" or "+info.pubDate,
-                                    actors = info.actor,
-                                    img = info.image
+                                    director = "",
+                                    pubDate = movie.openDt+" or "+"",
+                                    actors = "",
+                                    img = ""
                                 )
                                 result.add(temp)
-                            }
-                            is MyResult.Error -> {
-                                return@withContext
-                            }
-                        }
                     }
                 }
                 is MyResult.Error -> {
