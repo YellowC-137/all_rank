@@ -36,6 +36,7 @@ android {
         buildConfigField("String", "YOUTUBE_API_KEY", properties.getProperty("YOUTUBE_API_KEY"))
         buildConfigField("String", "MUSIC_API_KEY", properties.getProperty("MUSIC_API_KEY"))
         buildConfigField("String", "LYRIC_API_KEY", properties.getProperty("LYRIC_API_KEY"))
+        buildConfigField("String", "GAME_API_KEY", properties.getProperty("GAME_API_KEY"))
     }
 
     buildTypes {

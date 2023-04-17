@@ -7,7 +7,6 @@ import yellowc.app.allrank.data.remote.response.book_search_response.BookSearchR
 import yellowc.app.allrank.data.remote.response.bookstore_response.BookStoreResponse
 import yellowc.app.allrank.data.remote.response.boxoffice_response.BoxOfficeResponse
 import yellowc.app.allrank.data.remote.response.library_response.LibraryResponse
-import yellowc.app.allrank.data.remote.response.movie_search_response.MovieSearchResponse
 import yellowc.app.allrank.data.remote.response.news_search_response.NewsSearchResponse
 import yellowc.app.allrank.data.remote.response.youtube_response.YoutubeResponse
 import yellowc.app.allrank.domain.models.MyResult
